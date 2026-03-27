@@ -42,6 +42,7 @@ long f1(long n) {
         }
     }
     return k;
+    // O = O(n**2)
 }
 
 long f2(long n) {
@@ -55,6 +56,7 @@ long f2(long n) {
         }
     }
     return k;
+    // O = O(n**2)
 }
 
 long f3(long n) {
@@ -63,6 +65,7 @@ long f3(long n) {
         f3(n / 2);
     }
     return n;
+    // O = O(4logn)
 }
 
 long f4(long n) {
@@ -72,6 +75,7 @@ long f4(long n) {
         f2(n);
     }
     return n;
+    // O = O(n**2)
 }
 
 long f5(long n) {
@@ -85,6 +89,7 @@ long f5(long n) {
         }
     }
     return k;
+    // O = O(2logn)
 }
 
 long f6(long n) {
@@ -92,6 +97,7 @@ long f6(long n) {
     f3(n);
     f5(n);
     return n;
+    // O = O(n**2)
 }
 
 long f7(long n) {
@@ -103,4 +109,5 @@ long f7(long n) {
         k++;
     }
     return k;
+    // O = O(n**3)
 }
