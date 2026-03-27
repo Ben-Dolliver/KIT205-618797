@@ -1,6 +1,7 @@
 #pragma once
 // This header file contains declarations for a singly linked list data structure implementation in C.
 #pragma once 
+#include <stdio.h>
 
 // Definition of a singly linked list node struct with an integer data field and a pointer to the next node.
 typedef struct listNode {
@@ -30,3 +31,9 @@ void delete_list(List* self, int data);
 
 // Function to free the memory allocated to a list and all its nodes.
 void destroy_list(List* self);
+
+// Function to test the program 
+void list_test();
+
+// Function for ad hoc testing 
+void list_adhoc_test();

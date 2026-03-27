@@ -23,6 +23,185 @@ void print_list(List* self) {
 	printf("\n");
 }
 
+void option_insert(List* self) {
+	int input; //scanf input
+	
+	printf("\nEnter a number to insert (0 to exit): ");
+	scanf_s("%d", &input);
+
+	// add to list until user exits 
+	while (input != 0) {
+
+		insert_in_order(self, input);
+
+		printf("Enter a number to insert (0 to exit): ");
+		scanf_s("%d", &input);
+	}
+}
+
+void option_delete(List* self) {
+	int input;	// scanf input
+
+	printf("\nEnter a number to delete (0 to exit): ");
+	scanf_s("%d", &input);
+
+	// delete from the list until user exits 
+	while (input != 0) {
+
+		delete_list(self, input);
+
+		printf("Enter a number to delete (0 to exit): ");
+		scanf_s("%d", &input);
+	}
+}
+
+void option_print(List* self) {
+
+	printf("\nCurrent list: ");
+	print_list(self);
+}
+
+List reverse(List* self) {
+
+	List new_list_result = new_list();	// temp list to be reversed
+
+	// through the old list adding to the new list
+	ListNodePtr current = self->head;
+	while (current != NULL) {
+		insert_at_front(&new_list_result, current->data);
+		current = current->next;
+	}
+
+	return new_list_result;
+}
+
+List merge(List* list1, List* list2) {
+	List result = new_list();	// new list to merge old lists into 
+
+	ListNodePtr current = list1->head;
+	while (current != NULL) {
+		insert_in_order(&result, current->data);
+		current = current->next;
+	}
+
+	current = list2->head;
+	while (current != NULL) {
+		insert_in_order(&result, current->data);
+		current = current->next;
+	}
+
+	return result;
+}
+
+void list_test() {
+
+	List list = new_list();	// Create new list
+	printf("Testing insert_at_front... \n");
+
+	// Create a list with values 0, 2, 7, 3, 5
+	insert_at_front(&list,5);
+	insert_at_front(&list, 3);
+	insert_at_front(&list, 7);
+	insert_at_front(&list, 2);
+	insert_at_front(&list, 0);
+
+	// compare expected to true result
+	printf("Expected: 0, 2, 7, 3, 5 \n");
+	
+	printf("result: ");
+	print_list(&list);
+
+
+
+}
+
+void list_adhoc_test() {
+
+	List my_list = new_list();	// main list 
+	int input;					// scanf input
+	int quit = 0;				// quitting variable
+	printf("[List adhoc test]\n");
+
+	while (!quit) {
+		int option;		// option number
+		
+		// Menu display and input
+		printf("\nEnter 0 to quit \nEnter 1 to insert \nEnter 2 to delete \nEnter 3 to print \nEnter 4 to reverse \nChoice: ");
+		scanf_s("%d", &option);
+
+		// 
+		switch (option) {
+		case 0:
+			quit = 1;
+			break;
+
+		case 1:
+			option_insert(&my_list);
+			break;
+
+		case 2:
+			option_delete(&my_list);
+			break;
+
+		case 3:
+			option_print(&my_list);
+			break;
+
+		case 4:
+			my_list = reverse(&my_list);
+			printf("\nList has been reversed\n");
+			break;
+
+
+		default:
+			printf("Invalid option. Try again.\n");
+			break;
+		}
+	}
+	// start testing once done 
+	
+
+	// reverse test
+	printf("\n--- Testing reverse ---\n");
+	List reversed = reverse(&my_list);
+	print_list(&reversed);
+
+	// merge test
+	printf("\n--- Testing merge ---\n");
+
+	// create and add to 2 new lists
+	List list1 = new_list();
+	List list2 = new_list();
+
+	insert_in_order(&list1, 1);
+	insert_in_order(&list1, 3);
+	insert_in_order(&list1, 5);
+
+	insert_in_order(&list2, 2);
+	insert_in_order(&list2, 4);
+	insert_in_order(&list2, 6);
+
+	// show finish list
+	printf("List 1: ");
+	print_list(&list1);
+
+	printf("List 2: ");
+	print_list(&list2);
+
+	// merge and show finished products
+	List merged = merge(&list1, &list2);
+
+	printf("Merged: ");
+	print_list(&merged);
+
+	// cleanup
+	destroy_list(&reversed);
+	destroy_list(&list1);
+	destroy_list(&list2);
+	destroy_list(&merged);
+	destroy_list(&my_list);
+}
+
 // Function to insert a new node with given data at the front of the list.
 void insert_at_front(List* self, int data) {
 	ListNodePtr new_node = malloc(sizeof * new_node);
