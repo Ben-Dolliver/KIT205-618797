@@ -15,15 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bst.h">
+    <ClInclude Include="list_wk5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashtable_wk5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bst.c">
+    <ClCompile Include="list_wk5.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.c">
+    <ClCompile Include="hashtable_wk5.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
