@@ -5,7 +5,7 @@ int main(void) {
 
     // Call the BST test function
     bst_adhoc_test();
-
+    bst_test();
 
 
     // End program

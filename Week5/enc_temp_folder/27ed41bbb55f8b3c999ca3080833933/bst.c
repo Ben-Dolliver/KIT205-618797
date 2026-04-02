@@ -206,26 +206,6 @@ void bst_adhoc_test() {
 	print_post_order_bst(&tree);
 }
 
-
-int height_bst_node(BSTNodePtr self) {
-	// base case: empty tree
-	if (self == NULL) {
-		return -1;  // standard definition: empty tree = -1
-	}
-
-	// recursive calls
-	int left_height = height_bst_node(self->left);
-	int right_height = height_bst_node(self->right);
-
-	// return max + 1
-	if (left_height > right_height) {
-		return left_height + 1;
-	}
-	else {
-		return right_height + 1;
-	}
-}
-
 void bst_test() {
 
 	printf("[bst test start]\n\n");
@@ -297,12 +277,4 @@ void bst_test() {
 	}
 
 
-	// ---- Test Height ----
-	printf("\nHeight test:\n");
-	int h = height_bst(&tree);
-	printf("Height of tree: %d\n", h);
-
-
 }
-
-

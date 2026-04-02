@@ -18,12 +18,18 @@
     <ClInclude Include="bst.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Downloads\bst_print (1).h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bst.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Downloads\bst_print.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
