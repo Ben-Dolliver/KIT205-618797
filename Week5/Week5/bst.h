@@ -62,6 +62,12 @@ void delete_bst(BST* self, int n);
  */
 void print_in_order_bst(BST* self);
 
+//for printing the bst in pre order traversal
+void print_pre_order_bst(BST* self);
+
+//for printing the bst in post order traversal
+void print_post_order_bst(BST* self);
+
 /**
  * @brief Frees all memory allocated for a binary search tree
  *
@@ -69,4 +75,7 @@ void print_in_order_bst(BST* self);
  */
 void destroy_bst(BST* self);
 
+// do a bst adhoc test from input data and displaying the finished product
 void bst_adhoc_test();
+
+

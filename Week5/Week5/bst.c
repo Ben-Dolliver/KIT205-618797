@@ -129,13 +129,64 @@ void destroy_bst(BST* self) {
 	self->root = NULL;
 }
 
+
+
+/*
+	pre order traversal methods
+*/
+void print_pre_order_bst_node(BSTNodePtr self) {
+
+	if (self == NULL) {
+		printf("_");
+	}
+
+	else {
+		printf("(");
+		printf(" %d ", self->data_item);          // ROOT first
+		print_pre_order_bst_node(self->left);     // then LEFT
+		print_pre_order_bst_node(self->right);    // then RIGHT
+		printf(")");
+	}
+}
+
+void print_pre_order_bst(BST* self) {
+	print_pre_order_bst_node(self->root);
+}
+
+
+
+/*
+	post order first traversal methods
+*/
+void print_post_order_bst_node(BSTNodePtr self) {
+	
+	if (self == NULL) {
+		printf("_");
+	}
+
+	else {
+		printf("(");
+		print_post_order_bst_node(self->left);    // LEFT first
+		print_post_order_bst_node(self->right);   // then RIGHT
+		printf(" %d ", self->data_item);          // ROOT last
+		printf(")");
+	}
+}
+
+void print_post_order_bst(BST* self) {
+	print_post_order_bst_node(self->root);
+}
+
+
+
+
 void bst_adhoc_test() {
 	BST tree = new_bst();
 	int quit = 0;
 	int data;
 	while (quit == 0) {
 		printf("Enter some data: ");
-		scanf("%d", &data);
+		scanf_s("%d", &data);
 		if (data != 0) {
 			insert_bst(&tree, data);
 		}
@@ -143,6 +194,16 @@ void bst_adhoc_test() {
 			quit = 1;
 		}
 	}
+	printf("\nprinting in order traversal\n");
 	print_in_order_bst(&tree);
-	printf("\n");
+	
+
+	printf("\n\nprinting pre order traversal\n");
+	print_pre_order_bst(&tree);
+	
+
+	printf("\n\nprinting post order traversal\n");
+	print_post_order_bst(&tree);
+	
+
 }
