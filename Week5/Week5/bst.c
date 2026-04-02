@@ -181,11 +181,14 @@ void print_post_order_bst(BST* self) {
 
 
 void bst_adhoc_test() {
-	BST tree = new_bst();
-	int quit = 0;
-	int data;
+
+	BST tree = new_bst();	//binary search tree
+	int quit = 0;			// quit value
+	int data;				
+
+	// Inserting input data
 	while (quit == 0) {
-		printf("Enter some data: ");
+		printf("Enter some data (0 to quit): ");
 		scanf_s("%d", &data);
 		if (data != 0) {
 			insert_bst(&tree, data);

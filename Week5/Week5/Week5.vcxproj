@@ -127,12 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\Downloads\bst_print (1).h" />
     <ClInclude Include="bst.h" />
+    <ClInclude Include="bst_print.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\Downloads\bst_print.c" />
     <ClCompile Include="bst.c" />
+    <ClCompile Include="bst_print.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
