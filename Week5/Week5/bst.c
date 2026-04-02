@@ -226,6 +226,15 @@ int height_bst_node(BSTNodePtr self) {
 	}
 }
 
+
+int height_bst(BST* self) {
+	if (self == NULL) {
+		return 0; 
+	}
+	return height_bst_node(self->root);
+}
+
+
 void bst_test() {
 
 	printf("[bst test start]\n\n");
@@ -286,6 +295,11 @@ void bst_test() {
 	print_in_order_bst(&tree);
 	printf("\n\n");
 
+	// ---- Test Height ----
+	printf("\nHeight test:\n");
+	int h = height_bst(&tree);
+	printf("Height of tree: %d\n", h);
+
 	// ---- Test destroy ----
 	printf("Destroy tree:\n");
 	destroy_bst(&tree);
@@ -296,11 +310,6 @@ void bst_test() {
 		printf("FAIL: Tree not destroyed\n");
 	}
 
-
-	// ---- Test Height ----
-	printf("\nHeight test:\n");
-	int h = height_bst(&tree);
-	printf("Height of tree: %d\n", h);
 
 
 }

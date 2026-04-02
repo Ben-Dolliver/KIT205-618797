@@ -81,7 +81,7 @@ void bst_adhoc_test();
 // code for testing all of the functions 
 void bst_test(void);
 
-// returns the height of the binary search tree node
+// returns the height of the binary search tree 
 int height_bst(BST* self);
 
 
