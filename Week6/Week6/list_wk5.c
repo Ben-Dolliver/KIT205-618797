@@ -78,12 +78,3 @@ void destroy_list(List* self) {
 	}
 	self->head = NULL;
 }
-// hashtable_wk5.h
-#pragma once
-
-#include "list_wk5.h"
-
-typedef struct hashTable {
-	int size;
-	List* table;
-} HashTable;
