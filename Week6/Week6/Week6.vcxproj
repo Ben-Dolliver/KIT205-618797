@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="hashtable_wk5.c" />
     <ClCompile Include="list_wk5.c" />
+    <ClCompile Include="main.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
