@@ -61,9 +61,11 @@ void delete_from_list(List* self, String data) {
 			else {                    // middle of list
 				prev->next = current->next;
 
-				free(current);
+				free(current->data);  
+				free(current);        
 				current = prev->next;
 			}
+			
 		}
 		else {
 			prev = current;
@@ -88,6 +90,7 @@ void destroy_list(List* self) {
 
 
 void list_test() {
+	printf("\n		====[ Starting list test ]====\n");
 
 	
 	printf("Testing insert_at_front... \n");
