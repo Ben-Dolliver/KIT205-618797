@@ -65,6 +65,3 @@ void hash_adhoc_test() {
 	}
 	// TODO: destroy
 }
-
-
-

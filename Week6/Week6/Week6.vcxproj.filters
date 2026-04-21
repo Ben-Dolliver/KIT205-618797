@@ -26,10 +26,10 @@
     <ClCompile Include="list_wk5.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hashtable_wk5.c">
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.c">
+    <ClCompile Include="hashtable_wk5.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

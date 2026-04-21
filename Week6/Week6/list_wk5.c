@@ -1,7 +1,10 @@
 // list_wk5.c
+#define _CRT_SECURE_NO_WARNINGS	// making it ignore "scanf may not be safe"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "list_wk5.h"
+
 
 //TODO: change data type to char*
 
@@ -31,13 +34,10 @@ void print_list(List* self) {
 // -- copy string from parameter into newNode->data (strcpy)
 void insert_at_front(List* self, String data) {
 	ListNodePtr new_node = malloc(sizeof * new_node);
-	new_node->data = data;
-
-	// allocate memory for the string
+	
 	new_node->data = malloc(strlen(data) + 1);
-
-	// copy the data into node
-	strcopy(new_node->data, data);
+	strcpy(new_node->data, data);
+	
 
 	new_node->next = self->head;
 	self->head = new_node;
@@ -51,7 +51,7 @@ void delete_from_list(List* self, String data) {
 	ListNodePtr prev = NULL;
 
 	while (current != NULL) {
-		if (strcmp(current->data, data) == "") {
+		if (strcmp(current->data, data) == 0) {
 			if (prev == NULL) {        // front of list
 				self->head = current->next;
 				free(current->data);
@@ -89,18 +89,19 @@ void destroy_list(List* self) {
 
 void list_test() {
 
-	List list = new_list();	// Create new list
+	
 	printf("Testing insert_at_front... \n");
+	List list = new_list();	// Create new list
 
-	// Create a list with values 0, 2, 7, 3, 5
-	insert_at_front(&list, "0");
-	insert_at_front(&list, "2");
-	insert_at_front(&list, "7");
-	insert_at_front(&list, "3");
-	insert_at_front(&list, "5");
+	// Create a list with values a, b, c, d, e
+	insert_at_front(&list, "a");
+	insert_at_front(&list, "b");
+	insert_at_front(&list, "c");
+	insert_at_front(&list, "d");
+	insert_at_front(&list, "e");
 
 	// compare expected to true result
-	printf("Expected: 0, 2, 7, 3, 5 \n");
+	printf("Expected: e, d, c, b, a\n");
 
 	printf("result: ");
 	print_list(&list);
