@@ -67,7 +67,7 @@ void hash_adhoc_test() {
 	int command = 1;
 	HashTable table = create_hashtable(11);
 	char buffer[100];
-	String find = "";
+	char find[100];
 
 	printf("\n		====[ Starting hash adhoc test ]====");
 
