@@ -1,22 +1,21 @@
+#ifndef GRAPH_H
+#define GRAPH_H
 
+typedef struct Node {
+    int to;
+    int weight;
+    struct Node* next;
+} Node;
 
-
-typedef struct edge {
-	int to_vertex;
-	int weight;
-} Edge;
-
-typedef struct edgeNode {
-	Edge edge;
-	struct edgeNode* next;
-} *EdgeNodePtr;
-
-typedef struct edgeList {
-	EdgeNodePtr head;
+typedef struct {
+    Node* head;
 } EdgeList;
 
-typedef struct graph {
-	int V;
-	EdgeList* edges;
+typedef struct {
+    int V;
+    EdgeList* edges;
 } Graph;
 
+void add_edge(Graph* self, int from, int to, int w);
+
+#endif
