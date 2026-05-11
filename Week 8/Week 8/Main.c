@@ -98,7 +98,7 @@ int main() {
         }
     }
 
-    // print in-degrees
+    //  print in-degrees
     printf("\nIn-Degrees:\n");
 
     for (int i = 0; i < G.V; i++) {
@@ -106,12 +106,13 @@ int main() {
     }
 
 
-    // finish & shutdown code 
+    //  finish & shutdown code 
 
-    // free all edge nodes
+    //  free all edge nodes
     for (int i = 0; i < G.V; i++) {
         Node* current = G.edges[i].head;
 
+        //  loop through all nodes clearing data
         while (current != NULL) {
             Node* temp = current;
             current = current->next;
@@ -119,7 +120,7 @@ int main() {
         }
     }
 
-    // free arrays
+    //  free arrays
     free(G.edges);
     free(indegree);
 
