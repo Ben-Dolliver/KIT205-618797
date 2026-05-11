@@ -28,5 +28,19 @@
     <Text Include="graph.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="..\..\..\datasets\test.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\datasets\musae_git_features.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\datasets\musae_git_target.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\datasets\musae_git_edges.csv">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

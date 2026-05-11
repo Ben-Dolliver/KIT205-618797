@@ -133,7 +133,13 @@
     <ClCompile Include="Main.c" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\..\datasets\test.txt" />
     <Text Include="graph.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\datasets\musae_git_edges.csv" />
+    <None Include="..\..\..\datasets\musae_git_features.json" />
+    <None Include="..\..\..\datasets\musae_git_target.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

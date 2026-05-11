@@ -40,7 +40,7 @@ int main() {
     printf("-----[Week 8 Graphs Start]----- \n\n");
 
     // Open file and error check 
-    FILE* file = fopen("graph.txt", "r");
+    FILE* file = fopen("C:/Users/Ben Dover/Documents/School/KIT205/datasets/musae_git_edges.csv", "r");
     if (file == NULL) {
         printf("Error opening file!\n");
         return 1;
@@ -58,10 +58,11 @@ int main() {
 
     
     //  for loop to add all nodes with values from data file to the graph 
-    while (fscanf_s(file, "%d,%d,%d",
-        &in, &out, &weight) == 3) {
 
-        add_edge(&G, in, out, weight);
+    while (fscanf_s(file, "%d,%d",
+        &in, &out) == 2) {
+
+        add_edge(&G, in, out, 0);
     }
 
     printf("Vertices: %d\n", G.V);
