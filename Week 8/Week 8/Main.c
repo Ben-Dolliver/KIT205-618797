@@ -107,6 +107,22 @@ int main() {
 
 
     // finish & shutdown code 
+
+    // free all edge nodes
+    for (int i = 0; i < G.V; i++) {
+        Node* current = G.edges[i].head;
+
+        while (current != NULL) {
+            Node* temp = current;
+            current = current->next;
+            free(temp);
+        }
+    }
+
+    // free arrays
+    free(G.edges);
+    free(indegree);
+
     fclose(file);
     printf("\n-----[Week 8 Graphs Finish]----- \n\n");
     return 0;   
