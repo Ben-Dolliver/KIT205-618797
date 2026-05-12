@@ -57,23 +57,43 @@ double* calculate_pagerank(Graph* self, int iterations) {
         }
     }
 
-    //  calculate sums
-    for (int i = 0; i < G.V; i++) {
-        for (Node* current = G.edges[i].head; current != NULL; current = current->next) {
+    //  PageRank iterations
+    for (int k = 0; k < iterations; k++) {
 
-            //  calculate sigma sums
-            if (outdegree[i] > 0) {
-                sums[current->to] += pagerank[i] / outdegree[i];
+        //  reset sums at start of loop 
+        for (int i = 0; i < self->V; i++) {
+            sums[i] = 0.0;
+        }
+
+        //  calculate sums
+        for (int i = 0; i < self->V; i++) {
+
+            for (Node* current = self->edges[i].head;
+                current != NULL;
+                current = current->next) {
+
+                if (outdegree[i] > 0) {
+
+                    sums[current->to] +=
+                        pagerank[i] / outdegree[i];
+                }
             }
+        }
+
+        // apply damping factor
+        for (int i = 0; i < self->V; i++) {
+
+            pagerank[i] =
+                (1.0 - d) +
+                (d * sums[i]);
         }
     }
 
-    //  apply damping
-    for (int i = 0; i < G.V; i++) {
-        pagerank[i] = (1.0 - d) + (d * sums[i]);
-    }
+    //  free data
+    free(outdegree);
+    free(sums);
 
-
+    return pagerank;
 }
 
 
