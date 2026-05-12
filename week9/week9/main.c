@@ -35,7 +35,8 @@ int main() {
     int result;     //  result
     int in;         //  verices in 
     int out;        //  vertices out
-    int weight;     //  vertex weight 
+    int weight;     //  vertex 
+    double d = 0.85;//  damping factor
 
 
     printf("-----[Week 8 Graphs Start]----- \n\n");
@@ -69,57 +70,65 @@ int main() {
     printf("Vertices: %d\n", G.V);
 
 
-
-    //  create and initialise in-degree out degree and sums 
+    //  create and initialise in-degree, out-degree, sums, and page-rank
     int* indegree = malloc(G.V * sizeof(int));
     int* outdegree = malloc(G.V * sizeof(int));
     double* sums = malloc(G.V * sizeof(double));
+    double* pagerank = malloc(G.V * sizeof(double));
+
 
     //  error handling 
-    if (indegree == NULL || outdegree == NULL || sums == NULL) {
+    if (!indegree || !outdegree || !sums || !pagerank) {
         printf("Memory allocation failed\n");
         return 1;
     }
 
     //  initialise an arrays
     for (int i = 0; i < G.V; i++) {
+
         indegree[i] = 0;
         outdegree[i] = 0;
         sums[i] = 0.0;
+        pagerank[i] = 1.0;
     }
-
-
 
     //  loop for calculating the in-degrees
     for (int i = 0; i < G.V; i++) {
 
-        //  current node of graph
-        Node* current = G.edges[i].head;
 
-        //  loop untill at end of list adding to in-degree
-        while (current != NULL) {
+        //  for current node of graph loop untill at end of list adding to in-degree and out degree
+        for (Node* current = G.edges[i].head; current != NULL; current = current->next) {
 
-            // edge going INTO destination
-            indegree[current->to]++;
-            // edge going OUT from i
-            outdegree[i]++;
-
-            current = current->next;
+            indegree[current->to]++;    //  edge going INTO destination
+            outdegree[i]++;              //  edge going OUT from i
         }
     }
 
-    //  print in-degrees
-    printf("\nIn-Degrees:\n");
 
+    //  calculate sums
     for (int i = 0; i < G.V; i++) {
-        printf("Vertex %d: %d\n", i, indegree[i]);
+        for (Node* current = G.edges[i].head; current != NULL; current = current->next) {
+
+            //  calculate sigma sums
+            if (outdegree[i] > 0) {
+                sums[current->to] += pagerank[i] / outdegree[i];
+            }
+        }
     }
 
+    //  apply damping
+    for (int i = 0; i < G.V; i++) {
+        pagerank[i] = (1.0 - d) + (d * sums[i]);
+    }
 
-    //  finish & shutdown code 
+    printf("\nIn-Degrees:\n");  //  print in-degrees
+
+
+    /*  finish & shutdown   */ 
 
     //  free all edge nodes
     for (int i = 0; i < G.V; i++) {
+        printf("Vertex %d: %d\n", i, indegree[i]);
         Node* current = G.edges[i].head;
 
         //  loop through all nodes clearing data
@@ -129,6 +138,7 @@ int main() {
             free(temp);
         }
     }
+
 
     //  free arrays
     free(G.edges);
