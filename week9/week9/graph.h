@@ -18,4 +18,6 @@ typedef struct {
 
 void add_edge(Graph* self, int from, int to, int w);
 
+double* calculate_pagerank(Graph* self, int iterations);
+
 #endif
