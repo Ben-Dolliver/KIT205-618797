@@ -113,8 +113,8 @@ int main() {
     printf("-----[Week 8 Graphs Start]----- \n\n");
 
     // Open file and error check 
-    //FILE* file = fopen("C:/Users/Ben Dover/Documents/School/KIT205/datasets/musae_git_edges.csv", "r");
-    FILE* file = fopen("test.txt", "r");
+    FILE* file = fopen("C:/Users/Ben Dover/Documents/School/KIT205/datasets/musae_git_edges.csv", "r");
+    //FILE* file = fopen("test.txt", "r");
 
     if (!file) {    //  Error handling
         printf("Error opening file!\n");
@@ -177,7 +177,8 @@ int main() {
 
     printf("\nPageRanks:\n");
 
-    for (int i = 0; i < 20 && i < G.V; i++) {   //  print pagerank 
+    //  modify this one for display length c.g. (i < 20 &&)
+    for (int i = 0; i < G.V; i++) {   //  print pagerank 
         printf("Vertex %d: %.4f\n", i, pagerank[i]);
     }
 
@@ -186,7 +187,8 @@ int main() {
     /*  finish & shutdown   */ 
 
     //  free all edge nodes
-    for (int i = 0; i < G.V; i++) {
+    for (int i = 0; i < G.V; i++) {    //  modify this one for display length c.g. (i < 20 &&)
+
 
         // print vertex in-degrees 
         printf("Vertex %d: %d\n", i, indegree[i]);
