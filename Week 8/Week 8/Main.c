@@ -36,7 +36,7 @@ int main() {
     int out;        //  vertices out
     int weight;     //  vertex weight 
 
-    
+
     printf("-----[Week 8 Graphs Start]----- \n\n");
 
     // Open file and error check 
@@ -56,7 +56,7 @@ int main() {
         G.edges[i].head = NULL;
     }
 
-    
+
     //  for loop to add all nodes with values from data file to the graph 
 
     while (fscanf_s(file, "%d,%d",
@@ -69,40 +69,31 @@ int main() {
 
 
 
-    //  create and initialise in-degree out degree and sums 
+    //  create and initialise in-degree array
     int* indegree = malloc(G.V * sizeof(int));
-    int* outdegree = malloc(G.V * sizeof(int));
-    double* sums = malloc(G.V * sizeof(double));
 
     //  error handling 
-    if (indegree == NULL || outdegree == NULL || sums == NULL) {
+    if (indegree == NULL) {
         printf("Memory allocation failed\n");
         return 1;
     }
 
-    //  initialise an arrays
+    //  initialise an array of in-degrees
     for (int i = 0; i < G.V; i++) {
         indegree[i] = 0;
-        outdegree[i] = 0;
-        sums[i] = 0.0;
     }
 
 
 
     //  loop for calculating the in-degrees
     for (int i = 0; i < G.V; i++) {
-        
+
         //  current node of graph
         Node* current = G.edges[i].head;
 
         //  loop untill at end of list adding to in-degree
         while (current != NULL) {
-
-            // edge going INTO destination
             indegree[current->to]++;
-            // edge going OUT from i
-            outdegree[i]++;
-
             current = current->next;
         }
     }
@@ -135,6 +126,6 @@ int main() {
 
     fclose(file);
     printf("\n-----[Week 8 Graphs Finish]----- \n\n");
-    return 0;   
+    return 0;
 }
 
