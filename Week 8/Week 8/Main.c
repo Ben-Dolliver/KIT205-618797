@@ -69,18 +69,22 @@ int main() {
 
 
 
-    //  create and initialise in-degree array
+    //  create and initialise in-degree out degree and sums 
     int* indegree = malloc(G.V * sizeof(int));
+    int* outdegree = malloc(G.V * sizeof(int));
+    double* sums = malloc(G.V * sizeof(double));
 
     //  error handling 
-    if (indegree == NULL) {
+    if (indegree == NULL || outdegree == NULL || sums == NULL) {
         printf("Memory allocation failed\n");
         return 1;
     }
 
-    //  initialise an array of in-degrees
+    //  initialise an arrays
     for (int i = 0; i < G.V; i++) {
         indegree[i] = 0;
+        outdegree[i] = 0;
+        sums[i] = 0.0;
     }
 
 
@@ -93,7 +97,12 @@ int main() {
 
         //  loop untill at end of list adding to in-degree
         while (current != NULL) {
+
+            // edge going INTO destination
             indegree[current->to]++;
+            // edge going OUT from i
+            outdegree[i]++;
+
             current = current->next;
         }
     }
