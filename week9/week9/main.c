@@ -11,8 +11,8 @@ void add_edge(Graph* self, int from, int to, int w) {
     Node* newNode = malloc(sizeof(Node));
 
 
-    //   error handling 
-    if (newNode == NULL) {
+    //   Error handling 
+    if (!newNode) {
         printf("Memory allocation failed\n");
         return;
     }
@@ -41,7 +41,7 @@ double* calculate_pagerank(Graph* self, int iterations) {
     //  allocation error handling 
     if (!outdegree || !sums || !pagerank) {
         printf("Memory allocation failed\n");
-        return 1;
+        return NULL;
     }
 
     //  initialise out-degree and page-rank arrays
@@ -89,11 +89,13 @@ double* calculate_pagerank(Graph* self, int iterations) {
         }
     }
 
-    //  free data
+
+
+    //  free data and return 
     free(outdegree);
     free(sums);
-
     return pagerank;
+    free(pagerank);
 }
 
 
@@ -106,7 +108,6 @@ int main() {
     int in;         //  verices in 
     int out;        //  vertices out
     //int weight;     //  vertex  weight, redundant currently 
-    double d = 0.85;//  damping factor
 
 
     printf("-----[Week 8 Graphs Start]----- \n\n");
@@ -115,7 +116,7 @@ int main() {
     //FILE* file = fopen("C:/Users/Ben Dover/Documents/School/KIT205/datasets/musae_git_edges.csv", "r");
     FILE* file = fopen("test.txt", "r");
 
-    if (file == NULL) {
+    if (!file) {    //  Error handling
         printf("Error opening file!\n");
         return 1;
     }
@@ -143,8 +144,9 @@ int main() {
 
 
 
-    //  error handling 
-    if (!indegree) {
+
+    
+    if (!indegree) {    //  Error handling 
         printf("Memory allocation failed\n");
         return 1;
     }
@@ -163,13 +165,30 @@ int main() {
         }
     }
 
-    printf("\nIn-Degrees:\n");  //  print in-degrees
 
 
+    double* pagerank = calculate_pagerank(&G, 10);
+
+    
+    if (!pagerank) {    //  Error handling 
+        printf("Error in pagerank\n");
+        return 1;
+    }
+
+    printf("\nPageRanks:\n");
+
+    for (int i = 0; i < 20 && i < G.V; i++) {   //  print pagerank 
+        printf("Vertex %d: %.4f\n", i, pagerank[i]);
+    }
+
+
+    printf("\nIn-Degrees:\n");  
     /*  finish & shutdown   */ 
 
     //  free all edge nodes
     for (int i = 0; i < G.V; i++) {
+
+        // print vertex in-degrees 
         printf("Vertex %d: %d\n", i, indegree[i]);
         Node* current = G.edges[i].head;
 
@@ -185,7 +204,7 @@ int main() {
     //  free arrays
     free(G.edges);
     free(indegree);
-
+    free(pagerank);
     fclose(file);
     printf("\n-----[Week 8 Graphs Finish]----- \n\n");
     return 0;
