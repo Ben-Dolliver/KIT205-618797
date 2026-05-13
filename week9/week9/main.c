@@ -68,27 +68,17 @@ double* calculate_pagerank(Graph* self, int iterations) {
         //  calculate sums
         for (int i = 0; i < self->V; i++) {
 
-            for (Node* current = self->edges[i].head;
-                current != NULL;
-                current = current->next) {
-
-                if (outdegree[i] > 0) {
-
-                    sums[current->to] +=
-                        pagerank[i] / outdegree[i];
-                }
+            for (Node* current = self->edges[i].head; current != NULL; current = current->next) {
+                if (outdegree[i] > 0)
+                    sums[current->to] += pagerank[i] / outdegree[i];
             }
-        }
-
-        // apply damping factor
-        for (int i = 0; i < self->V; i++) {
-
-            pagerank[i] =
-                (1.0 - d) +
-                (d * sums[i]);
         }
     }
 
+    // apply damping factor
+    for (int i = 0; i < self->V; i++) {
+        pagerank[i] = (1.0 - d) + (d * sums[i]);
+    }
 
 
     //  free data and return 
@@ -142,9 +132,6 @@ int main() {
     //  create and initialise in-degree
     int* indegree = malloc(G.V * sizeof(int));
 
-
-
-
     
     if (!indegree) {    //  Error handling 
         printf("Memory allocation failed\n");
@@ -166,10 +153,8 @@ int main() {
     }
 
 
-
     double* pagerank = calculate_pagerank(&G, 10);
 
-    
     if (!pagerank) {    //  Error handling 
         printf("Error in pagerank\n");
         return 1;
@@ -188,7 +173,6 @@ int main() {
 
     //  free all edge nodes
     for (int i = 0; i < G.V; i++) {    //  modify this one for display length c.g. (i < 20 &&)
-
 
         // print vertex in-degrees 
         printf("Vertex %d: %d\n", i, indegree[i]);
