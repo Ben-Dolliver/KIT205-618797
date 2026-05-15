@@ -54,3 +54,29 @@ void addPaper(Database* db, int id) {
 
 
 
+Author* findAuthor(Database* db, int id) {
+}
+
+Paper* findPaper(Database* db, int id) {
+}
+
+
+
+void addAuthorship(Database* db, int authorID, int paperID) {
+}
+
+void printAuthors(Database* db) {
+}
+
+void printPapers(Database* db) {
+}
+
+void printPapersByAuthor(Database* db, int authorID) {
+}
+
+void printAuthorsByPaper(Database* db, int paperID) {
+}
+
+
+
+

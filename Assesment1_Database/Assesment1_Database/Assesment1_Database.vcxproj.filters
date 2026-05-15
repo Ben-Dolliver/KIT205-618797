@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\project2">
+      <UniqueIdentifier>{0f9fd763-c433-45ef-9d01-0b0696ec1343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\project2">
+      <UniqueIdentifier>{36c2c358-299a-4938-af6f-9d0ba62c16b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -22,6 +28,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bst.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,6 +44,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

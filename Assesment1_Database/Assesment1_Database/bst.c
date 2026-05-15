@@ -60,4 +60,8 @@ AuthorNode* insertAuthorBST(AuthorNode* root, int id) {
 }
 
 
+void printPaperBST(PaperNode* root) {
+}
 
+void printAuthorBST(AuthorNode* root) {
+}
