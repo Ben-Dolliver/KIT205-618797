@@ -38,8 +38,12 @@ typedef struct Database {
 // FUNCTION DECLARATIONS
 // =========================
 
+
+void databaseTesting();
+
 Author* createAuthor(int id);
 Paper* createPaper(int id);
+Database* createDatabase();
 
 Author* findAuthor(Database* db, int id);
 Paper* findPaper(Database* db, int id);

@@ -5,7 +5,56 @@
 
 
 
-Database* createDatabase(int id) {
+
+void databaseTesting() {
+    Database* db = createDatabase();
+
+
+    printf("\n[adding authors]\n");
+
+    addAuthor(db, 101);
+    addAuthor(db, 102);
+
+
+    printf("\n[adding papers]\n");
+
+    addPaper(db, 2001);
+    addPaper(db, 2002);
+
+
+    printf("\n[linking authorship]\n");
+
+    addAuthorship(db, 101, 2001);
+    addAuthorship(db, 101, 2002);
+
+    addAuthorship(db, 102, 2001);
+
+    printf("\n--------[printing results]--------\n");
+
+    printAuthors(db);
+
+    printPapers(db);
+
+    printPapersByAuthor(db, 101);
+
+    printAuthorsByPaper(db, 2001);
+}
+
+
+Database* createDatabase() {
+
+    Database* db = malloc(sizeof(Database));
+
+    if (db == NULL) {
+
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
+
+    db->authorHead = NULL;
+    db->paperHead = NULL;
+
+    return db;
 
 }
 
@@ -31,9 +80,6 @@ Paper* createPaper(int id) {
 
     return paper;
 }
-
-
-
 
 
 
@@ -121,12 +167,36 @@ void addAuthorship(Database* db, int authorID, int paperID) {
 
 }
 
+
+//  Print all authors in database 
 void printAuthors(Database* db) {
 
+    Author* current = db->authorHead;
 
+    printf("\nAuthors \n");
+
+    while (current != NULL) {
+
+        printf("Author ID: %d\n", current->authorID);
+
+        current = current->next;
+    }
 }
 
+
+//  Print all papers in database
 void printPapers(Database* db) {
+
+    Paper* current = db->paperHead;
+
+    printf("\nPapers\n");
+
+    while (current != NULL) {
+
+        printf("Paper ID: %d\n", current->paperID);
+
+        current = current->next;
+    }
 }
 
 
@@ -143,7 +213,7 @@ void printPapersByAuthor(Database* db, int authorID) {
         return;
     }
 
-    printf("\nPapers by Author %d\n", authorID);
+    printf("\nPapers by Author ID %d\n", authorID);
 
     // print the author's paper BST
     printPaperBST(author->papers);
@@ -162,7 +232,7 @@ void printAuthorsByPaper(Database* db, int paperID) {
         return;
     }
 
-    printf("\nAuthors for Paper %d\n", paperID);
+    printf("\nAuthors for Paper ID %d\n", paperID);
 
     // print the paper's author BST
     printAuthorBST(paper->authors);
