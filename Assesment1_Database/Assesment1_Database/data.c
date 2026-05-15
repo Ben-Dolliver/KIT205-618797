@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include "data.h"
 
@@ -8,15 +9,49 @@
 #define FILE_NAME "test.txt"
 
 
+int exists(FILE* file, int id) {
 
+    int currentID;
+    char type[20];
+
+    rewind(file);
+
+    while (fscanf_s(file, "%19s %d", type, (unsigned)_countof(type), &currentID) == 2) {
+
+        // compare AUTHOR  or PAPER entries
+        if (strcmp(type, "AUTHOR") == 0 ||
+            strcmp(type, "PAPER") == 0) {
+
+            if (currentID == id) {
+
+                return 1;
+            }
+        }
+    }
+
+    return 0;
+}
 
 int createRandAuthor(FILE* file) {
 
+    int unique = 0; //  unique identifier 
+    int authorID;
+
+
+
     // random author ID
-    int authorID = rand() % MAX_AUTHORS + 1;
+    while (!unique) {
+        authorID = rand() % MAX_AUTHORS + 100;
+        unique = !exists(file, authorID);
+
+
+    }
+
+    // move back to end before writing
+    fseek(file, 0, SEEK_END);
 
     // write to file
-    fprintf(file, "AUTHOR ID %d\n", authorID);
+    fprintf(file, "AUTHOR %d\n", authorID);
 
     return authorID;
 }
@@ -25,10 +60,23 @@ int createRandAuthor(FILE* file) {
 
 int createRandPaper(FILE* file) {
 
-    // random paper ID
-    int paperID = rand() % MAX_PAPERS + 1000;
+    int unique = 0;
+    int paperID;
 
-    // write to file
+
+    // generate unique paper ID
+    while (!unique) {
+
+        paperID = rand() % 100000 + 1000;
+
+        unique = !exists(file, paperID);
+    }
+
+
+    // move to end of file before writing
+    fseek(file, 0, SEEK_END);
+
+    // write paper to file
     fprintf(file, "PAPER %d\n", paperID);
 
     return paperID;
