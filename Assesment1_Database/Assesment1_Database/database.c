@@ -3,6 +3,13 @@
 
 #include "database.h"
 
+
+
+Database* createDatabase(int id) {
+
+}
+
+//  Creates an author from author ID leaves papers empty
 Author* createAuthor(int id) {
     Author* author = malloc(sizeof(Author));
 
@@ -13,6 +20,7 @@ Author* createAuthor(int id) {
 }
 
 
+//  Creates an Paper from Paper ID leaves authors empty
 Paper* createPaper(int id) {
 
     Paper* paper = malloc(sizeof(Paper));
@@ -29,7 +37,7 @@ Paper* createPaper(int id) {
 
 
 
-
+//  adds a new author into the database 
 void addAuthor(Database* db, int id) {
 
     if (findAuthor(db, id) != NULL)
@@ -41,6 +49,8 @@ void addAuthor(Database* db, int id) {
     db->authorHead = newAuthor;
 }
 
+
+//  Adds paper node to database 
 void addPaper(Database* db, int id) {
 
     if (findPaper(db, id) != NULL)
@@ -55,14 +65,60 @@ void addPaper(Database* db, int id) {
 
 
 Author* findAuthor(Database* db, int id) {
+    Author* current = db->authorHead;
+
+    while (current != NULL) {
+
+        if (current->authorID == id) {
+            return current;
+        }
+        current = current->next;
+    }
+
+    return NULL;
 }
 
 Paper* findPaper(Database* db, int id) {
+
+    Paper* current = db->paperHead;
+
+    while (current != NULL) {
+
+        if (current->paperID == id) {
+            return current;
+        }
+        current = current->next;
+    }
+
+    return NULL;
 }
 
 
 
 void addAuthorship(Database* db, int authorID, int paperID) {
+
+    // find author in linked list
+    Author* author = findAuthor(db, authorID);
+
+    // find paper in linked list
+    Paper* paper = findPaper(db, paperID);
+
+    // error checking
+    if (author == NULL || paper == NULL) {
+
+        printf("Author or Paper not found\n");
+        return;
+    }
+
+    // insert paper into author's BST
+    author->papers =
+        insertPaperBST(author->papers, paperID);
+
+
+    // insert author into paper's BST
+    paper->authors =
+        insertAuthorBST(paper->authors, authorID);
+
 }
 
 void printAuthors(Database* db) {
