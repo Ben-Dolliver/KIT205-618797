@@ -59,9 +59,39 @@ AuthorNode* insertAuthorBST(AuthorNode* root, int id) {
     return root;
 }
 
-
+//  print papers of author using inorder traversal 
 void printPaperBST(PaperNode* root) {
+
+    // base case
+    if (root == NULL) {
+        return;
+    }
+
+    // print left subtree
+    printPaperBST(root->left);
+
+    // print current node
+    printf("Paper ID: %d\n", root->paperID);
+
+    // print right subtree
+    printPaperBST(root->right);
 }
 
+
+//  print authors of paper using inorder traversal 
 void printAuthorBST(AuthorNode* root) {
+
+    // base case
+    if (root == NULL) {
+        return;
+    }
+
+    // print left subtree
+    printAuthorBST(root->left);
+
+    // print current node
+    printf("Author ID: %d\n", root->authorID);
+
+    // print right subtree
+    printAuthorBST(root->right);
 }

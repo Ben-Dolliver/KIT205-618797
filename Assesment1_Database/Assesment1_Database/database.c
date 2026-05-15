@@ -122,15 +122,50 @@ void addAuthorship(Database* db, int authorID, int paperID) {
 }
 
 void printAuthors(Database* db) {
+
+
 }
 
 void printPapers(Database* db) {
 }
 
+
+//  print the bst of papers of specific author
 void printPapersByAuthor(Database* db, int authorID) {
+
+    // find author in linked list
+    Author* author = findAuthor(db, authorID);
+
+    // error checking
+    if (author == NULL) {
+
+        printf("Author not found\n");
+        return;
+    }
+
+    printf("\nPapers by Author %d\n", authorID);
+
+    // print the author's paper BST
+    printPaperBST(author->papers);
 }
 
+//  print the bst of authors of specific paper
 void printAuthorsByPaper(Database* db, int paperID) {
+
+    // find paper in linked list
+    Paper* paper = findPaper(db, paperID);
+
+    // error checking
+    if (paper == NULL) {
+
+        printf("Paper not found\n");
+        return;
+    }
+
+    printf("\nAuthors for Paper %d\n", paperID);
+
+    // print the paper's author BST
+    printAuthorBST(paper->authors);
 }
 
 
