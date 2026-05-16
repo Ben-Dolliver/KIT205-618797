@@ -130,6 +130,8 @@
     <ClCompile Include="bst.c" />
     <ClCompile Include="data.c" />
     <ClCompile Include="database.c" />
+    <ClCompile Include="database2.c" />
+    <ClCompile Include="hashtable.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +141,8 @@
     <ClInclude Include="bst.h" />
     <ClInclude Include="data.h" />
     <ClInclude Include="database.h" />
+    <ClInclude Include="database2.h" />
+    <ClInclude Include="hashtable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

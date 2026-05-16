@@ -15,15 +15,6 @@ int main() {
 	//printData();
 
 	
-	
 	databaseTesting();
-	
-	
-
-	
-
-
-
-
 	return 0;
 }

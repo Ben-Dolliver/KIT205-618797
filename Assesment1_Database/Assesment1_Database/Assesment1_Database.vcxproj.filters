@@ -33,6 +33,12 @@
     <ClCompile Include="data.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="database2.c">
+      <Filter>Source Files\project2</Filter>
+    </ClCompile>
+    <ClCompile Include="hashtable.c">
+      <Filter>Source Files\project2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="test.txt">
@@ -48,6 +54,12 @@
     </ClInclude>
     <ClInclude Include="data.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="database2.h">
+      <Filter>Header Files\project2</Filter>
+    </ClInclude>
+    <ClInclude Include="hashtable.h">
+      <Filter>Header Files\project2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
