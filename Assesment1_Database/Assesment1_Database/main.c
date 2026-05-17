@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "database.h"
 #include "data.h"
+#include "database2.h"
 
 
 
@@ -15,6 +16,6 @@ int main() {
 	//printData();
 
 	
-	databaseTesting();
+	database2_testing();
 	return 0;
 }

@@ -5,7 +5,7 @@
 
 
 // project 2 database
-typedef struct Database {
+typedef struct P2Database {
 
     AuthorHashTable authors;
     PaperHashTable papers;
@@ -16,7 +16,8 @@ typedef struct Database {
 //  database functions 
 P2Database* createP2Database();
 
-
+//testing function
+void database2_testing();
 
 //  add functions 
 void addP2Author(P2Database* db, int authorID);

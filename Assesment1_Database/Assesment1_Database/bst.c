@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "bst.h"
 
+#include "bst.h"
 
 
 
@@ -95,3 +95,4 @@ void printAuthorBST(AuthorNode* root) {
     // print right subtree
     printAuthorBST(root->right);
 }
+

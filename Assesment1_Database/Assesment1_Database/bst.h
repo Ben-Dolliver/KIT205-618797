@@ -1,7 +1,12 @@
+#ifndef BST_H
 #define BST_H
 
+#include <stdio.h>
+#include <stdlib.h>
 
 
+
+//  paper BST node
 typedef struct PaperNode {
 
     int paperID;
@@ -12,7 +17,7 @@ typedef struct PaperNode {
 } PaperNode;
 
 
-
+//  author BST node
 typedef struct AuthorNode {
 
     int authorID;
@@ -40,8 +45,4 @@ void printPaperBST(PaperNode* root);
 void printAuthorBST(AuthorNode* root);
 
 
-
-
-
-
-
+#endif

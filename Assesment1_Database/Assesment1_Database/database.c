@@ -32,11 +32,9 @@ void databaseTesting() {
     printf("\n--------[printing results]--------\n");
 
     printAuthors(db);
-
     printPapers(db);
 
     printPapersByAuthor(db, 101);
-
     printAuthorsByPaper(db, 2001);
 }
 
@@ -157,13 +155,11 @@ void addAuthorship(Database* db, int authorID, int paperID) {
     }
 
     // insert paper into author's BST
-    author->papers =
-        insertPaperBST(author->papers, paperID);
+    author->papers = insertPaperBST(author->papers, paperID);
 
 
     // insert author into paper's BST
-    paper->authors =
-        insertAuthorBST(paper->authors, authorID);
+    paper->authors = insertAuthorBST(paper->authors, authorID);
 
 }
 
@@ -172,7 +168,6 @@ void addAuthorship(Database* db, int authorID, int paperID) {
 void printAuthors(Database* db) {
 
     Author* current = db->authorHead;
-
     printf("\nAuthors \n");
 
     while (current != NULL) {
@@ -188,7 +183,6 @@ void printAuthors(Database* db) {
 void printPapers(Database* db) {
 
     Paper* current = db->paperHead;
-
     printf("\nPapers\n");
 
     while (current != NULL) {
@@ -203,10 +197,10 @@ void printPapers(Database* db) {
 //  print the bst of papers of specific author
 void printPapersByAuthor(Database* db, int authorID) {
 
-    // find author in linked list
+    //  find author in linked list
     Author* author = findAuthor(db, authorID);
 
-    // error checking
+    //  error checking
     if (author == NULL) {
 
         printf("Author not found\n");
@@ -215,17 +209,17 @@ void printPapersByAuthor(Database* db, int authorID) {
 
     printf("\nPapers by Author ID %d\n", authorID);
 
-    // print the author's paper BST
+    //  print the author's paper BST
     printPaperBST(author->papers);
 }
 
 //  print the bst of authors of specific paper
 void printAuthorsByPaper(Database* db, int paperID) {
 
-    // find paper in linked list
+    //  find paper in linked list
     Paper* paper = findPaper(db, paperID);
 
-    // error checking
+    //  error checking
     if (paper == NULL) {
 
         printf("Paper not found\n");
@@ -234,7 +228,7 @@ void printAuthorsByPaper(Database* db, int paperID) {
 
     printf("\nAuthors for Paper ID %d\n", paperID);
 
-    // print the paper's author BST
+    //  print the paper's author BST
     printAuthorBST(paper->authors);
 }
 
