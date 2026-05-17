@@ -12,7 +12,7 @@
 
 void performanceTesting() {
 
-    printf("\n------[performance testing]------\n");
+    printf("\n\n  ------[performance testing]------\n");
 
     Database* db = createDatabase();        //  database 1 testing set
     P2Database* db2 = createP2Database();   //  database 2 testing set
@@ -24,84 +24,104 @@ void performanceTesting() {
     double executionTime2;                  //  time of execution for test 1
     double min;                             //  the lower of the execution times
 
-    const int TEST_SIZE = 10000;            //  size of tesing data
+    int TEST_SIZE = 0;                //  size of tesing data
+    int testSizes[]  =                      //  sizes of testing data 
+    { 1000, 2000, 4000, 8000, 16000 , 30000, 50000};
+    int numTests = 7;                       //  number of tests
+
+    printf("\n[Project 1]\n");
 
 
-    start = clock();
-    // add authors
-    for (int i = 0; i < TEST_SIZE; i++) {
-        addAuthor(db, i);
+    // loop through all test sizes
+    for (int t = 0; t < numTests; t++) {
+
+        int TEST_SIZE = testSizes[t];
+        
+        db = createDatabase();
+
+        start = clock();
+
+        //  add authors
+        for (int i = 0; i < TEST_SIZE; i++) {
+            addAuthor(db, i);
+        }
+
+        //  add papers
+        for (int i = 0; i < TEST_SIZE; i++) {
+            addPaper(db, i + 10000);
+        }
+
+        //  link authorship
+        for (int i = 0; i < TEST_SIZE; i++) {
+            addAuthorship(db, i, i + 10000);
+        }
+
+        end = clock();
+        executionTime = ((double)(end - start))/ CLOCKS_PER_SEC;
+        
+        printf("\nProject 1 Execution Time With %d Actions: %f seconds\n", TEST_SIZE, executionTime);
+    
     }
 
-    // add papers
-    for (int i = 0; i < TEST_SIZE; i++) {
-        addPaper(db, i + 10000);
+    printf("\n[Project 2]\n");
+    for (int t = 0; t < numTests; t++) {
+
+        int TEST_SIZE = testSizes[t];
+
+        db2 = createP2Database();
+
+        start = clock();
+
+        //  add authors
+        for (int i = 0; i < TEST_SIZE; i++) {
+            addAuthor(db, i);
+        }
+
+        //  add papers
+        for (int i = 0; i < TEST_SIZE; i++) {
+            addPaper(db, i + 10000);
+        }
+
+        //  link authorship
+        for (int i = 0; i < TEST_SIZE; i++) {
+            addAuthorship(db, i, i + 10000);
+        }
+
+        end = clock();
+        executionTime2 = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+        printf("\nProject 2 Execution Time With %d Actions: %f seconds\n", TEST_SIZE, executionTime2);
+
     }
 
-    // link authorship
-    for (int i = 0; i < TEST_SIZE; i++) {
-        addAuthorship(db, i, i + 10000);
-    }
-
-    end = clock();
-    executionTime = ((double)(end - start))/ CLOCKS_PER_SEC;
-
-    printf("\nProject 1 Execution Time: %f seconds\n", executionTime);
-
-
-    start = clock();
-
-
-    // add authors
-    for (int i = 0; i < TEST_SIZE; i++) {
-        addP2Author(db2, i);
-    }
-
-
-    // add papers
-    for (int i = 0; i < TEST_SIZE; i++) {
-        addP2Paper(db2, i + 10000);
-    }
-
-    // link authorship
-    for (int i = 0; i < TEST_SIZE; i++) {
-        addP2Authorship(db2, i, i + 10000);
-    }
-
-    end = clock();
-    executionTime2 = ((double)(end - start)) / CLOCKS_PER_SEC;
-   
-    printf("Project 2 Execution Time: %f seconds\n", executionTime2);
-
+    //  calculate quickest project
     min = (executionTime < executionTime2) ? executionTime : executionTime2;
     Sleep(3000);
 
-    printf("...and the winner is: \n");
+
+    //  build suspence
+    printf("\n\n...and the winner is: \n");
     Sleep(2000);
 
-    printf(". ");
+    printf(". ");   //  keep building suspence
     Sleep(2000);
 
-    printf(". ");
+    printf(". ");   //  wait for it 
     Sleep(2000);
 
-    printf(". ");
+    printf(". ");   //  almost there 
     Sleep(2000);
 
 
     printf((executionTime < executionTime2) ? "Project 1!!!!\n":"Project 2!!!!\n");
-    Sleep(3000);
+    Sleep(3000);    //  let them admire
 
 
-    printf("\n------[performance testing complete]------\n");
+    printf("\n  ------[performance testing complete]------\n");
 
 
 
 }
-
-
-
-
 
 
 
