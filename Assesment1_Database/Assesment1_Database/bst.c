@@ -5,6 +5,49 @@
 #include "bst.h"
 
 
+void testBST() {
+
+    printf("\n\n    ------[BST testing]------\n");
+
+
+    //  create empty BSTs
+    PaperNode* paperRoot = NULL;
+    AuthorNode* authorRoot = NULL;
+
+
+    //  insert papers
+
+    printf("\n[adding papers]\n");
+
+    paperRoot = insertPaperBST(paperRoot, 2001);
+    paperRoot = insertPaperBST(paperRoot, 2005);
+    paperRoot = insertPaperBST(paperRoot, 2003);
+
+
+    //  insert authors
+
+    printf("\n[adding authors]\n");
+
+    authorRoot = insertAuthorBST(authorRoot, 101);
+    authorRoot = insertAuthorBST(authorRoot, 105);
+    authorRoot = insertAuthorBST(authorRoot, 103);
+
+
+    //  print BSTs
+
+    printf("\n-----[printing results]-----\n");
+
+    printf("\nPaper BST\n");
+    printPaperBST(paperRoot);
+
+    printf("\nAuthor BST\n");
+    printAuthorBST(authorRoot);
+
+    printf("\n  ------[BST testing complete]------\n");
+
+}
+
+
 
 PaperNode* createPaperNode(int id) {
 

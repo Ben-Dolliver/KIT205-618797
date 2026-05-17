@@ -7,6 +7,10 @@
 
 
 void databaseTesting() {
+    
+    printf("\n\n    ------[database 1 testing]------\n");
+
+
     Database* db = createDatabase();
 
 
@@ -29,13 +33,16 @@ void databaseTesting() {
 
     addAuthorship(db, 102, 2001);
 
-    printf("\n--------[printing results]--------\n");
+    printf("\n-----[printing results]-----\n");
 
     printAuthors(db);
     printPapers(db);
 
     printPapersByAuthor(db, 101);
     printAuthorsByPaper(db, 2001);
+
+    printf("\n  ------[database 1 testing complete]------\n");
+
 }
 
 

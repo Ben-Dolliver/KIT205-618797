@@ -28,7 +28,6 @@ void addP2Paper(P2Database* db, int paperID);
 void addP2Authorship(P2Database* db, int authorID, int paperID);
 
 
-
 //  print functions
 void printP2Authors(P2Database* db);
 void printP2Papers(P2Database* db);

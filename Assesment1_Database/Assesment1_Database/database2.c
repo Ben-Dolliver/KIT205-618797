@@ -8,6 +8,9 @@
 
 void database2_testing() {
 
+    printf("\n\n    ------[database 2 testing]------\n");
+
+
 	P2Database* db =  createP2Database();
 
     printf("\n[adding authors]\n");
@@ -29,13 +32,16 @@ void database2_testing() {
 
     addP2Authorship(db, 102, 2001);
 
-    printf("\n--------[printing results]--------\n");
+    printf("\n-----[printing results]-----\n");
 
     printP2Authors(db);
     printP2Papers(db);
 
     printP2PapersByAuthor(db, 101);
     printP2AuthorsByPaper(db, 2001);
+
+    printf("\n  ------[database 2 testing complete]------\n");
+
 
 }
 
@@ -114,7 +120,6 @@ void printP2Authors(P2Database* db) {
         while (current != NULL) {
 
             printf("Author ID: %d\n", current->authorID);
-
             current = current->next;
         }
     }
@@ -133,7 +138,6 @@ void printP2Papers(P2Database* db) {
         while (current != NULL) {
 
             printf("Paper ID: %d\n", current->paperID);
-
             current = current->next;
         }
     }
