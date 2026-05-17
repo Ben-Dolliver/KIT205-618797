@@ -133,6 +133,7 @@
     <ClCompile Include="database2.c" />
     <ClCompile Include="hashtable.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="testing.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="test.txt" />
@@ -143,6 +144,7 @@
     <ClInclude Include="database.h" />
     <ClInclude Include="database2.h" />
     <ClInclude Include="hashtable.h" />
+    <ClInclude Include="testing.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

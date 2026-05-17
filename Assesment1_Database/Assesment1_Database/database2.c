@@ -6,44 +6,7 @@
 #include "bst.h"
 
 
-void database2_testing() {
 
-    printf("\n\n    ------[database 2 testing]------\n");
-
-
-	P2Database* db =  createP2Database();
-
-    printf("\n[adding authors]\n");
-
-    addP2Author(db, 101);
-    addP2Author(db, 102);
-
-
-    printf("\n[adding papers]\n");
-
-    addP2Paper(db, 2001);
-    addP2Paper(db, 2002);
-
-
-    printf("\n[linking authorship]\n");
-
-    addP2Authorship(db, 101, 2001);
-    addP2Authorship(db, 101, 2002);
-
-    addP2Authorship(db, 102, 2001);
-
-    printf("\n-----[printing results]-----\n");
-
-    printP2Authors(db);
-    printP2Papers(db);
-
-    printP2PapersByAuthor(db, 101);
-    printP2AuthorsByPaper(db, 2001);
-
-    printf("\n  ------[database 2 testing complete]------\n");
-
-
-}
 
 
 

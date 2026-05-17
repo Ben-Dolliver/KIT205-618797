@@ -6,44 +6,7 @@
 
 
 
-void databaseTesting() {
-    
-    printf("\n\n    ------[database 1 testing]------\n");
 
-
-    Database* db = createDatabase();
-
-
-    printf("\n[adding authors]\n");
-
-    addAuthor(db, 101);
-    addAuthor(db, 102);
-
-
-    printf("\n[adding papers]\n");
-
-    addPaper(db, 2001);
-    addPaper(db, 2002);
-
-
-    printf("\n[linking authorship]\n");
-
-    addAuthorship(db, 101, 2001);
-    addAuthorship(db, 101, 2002);
-
-    addAuthorship(db, 102, 2001);
-
-    printf("\n-----[printing results]-----\n");
-
-    printAuthors(db);
-    printPapers(db);
-
-    printPapersByAuthor(db, 101);
-    printAuthorsByPaper(db, 2001);
-
-    printf("\n  ------[database 1 testing complete]------\n");
-
-}
 
 
 Database* createDatabase() {

@@ -39,6 +39,9 @@
     <ClCompile Include="hashtable.c">
       <Filter>Source Files\project2</Filter>
     </ClCompile>
+    <ClCompile Include="testing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="test.txt">
@@ -60,6 +63,9 @@
     </ClInclude>
     <ClInclude Include="hashtable.h">
       <Filter>Header Files\project2</Filter>
+    </ClInclude>
+    <ClInclude Include="testing.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
