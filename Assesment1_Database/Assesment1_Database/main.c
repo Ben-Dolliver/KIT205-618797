@@ -8,12 +8,13 @@ int main() {
 	//create_data();
 	//printData();
 
-	databaseTesting();
-	database2_testing(); 
-	testBST();
-	hashtableTesting();
+	//databaseTesting();
+	//database2_testing(); 
+	//testBST();
+	//hashtableTesting();
+	//performanceTesting();
 
-	//testAll();
+	testAll();
 	printf("\n\n\n\n				--------[DATABASE PROGRAM END]--------\n");
 
 	return 0;

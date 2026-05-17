@@ -1,10 +1,108 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <windows.h>
 
 #include "bst.h"
 #include "hashtable.h"
 #include "database.h"
 #include "database2.h"
+
+
+
+void performanceTesting() {
+
+    printf("\n------[performance testing]------\n");
+
+    Database* db = createDatabase();        //  database 1 testing set
+    P2Database* db2 = createP2Database();   //  database 2 testing set
+
+    clock_t start = clock();                //  start of testing
+    clock_t end = clock();                  //  end of testing 
+
+    double executionTime;                   //  time of execution for test 1
+    double executionTime2;                  //  time of execution for test 1
+    double min;                             //  the lower of the execution times
+
+    const int TEST_SIZE = 10000;            //  size of tesing data
+
+
+    start = clock();
+    // add authors
+    for (int i = 0; i < TEST_SIZE; i++) {
+        addAuthor(db, i);
+    }
+
+    // add papers
+    for (int i = 0; i < TEST_SIZE; i++) {
+        addPaper(db, i + 10000);
+    }
+
+    // link authorship
+    for (int i = 0; i < TEST_SIZE; i++) {
+        addAuthorship(db, i, i + 10000);
+    }
+
+    end = clock();
+    executionTime = ((double)(end - start))/ CLOCKS_PER_SEC;
+
+    printf("\nProject 1 Execution Time: %f seconds\n", executionTime);
+
+
+    start = clock();
+
+
+    // add authors
+    for (int i = 0; i < TEST_SIZE; i++) {
+        addP2Author(db2, i);
+    }
+
+
+    // add papers
+    for (int i = 0; i < TEST_SIZE; i++) {
+        addP2Paper(db2, i + 10000);
+    }
+
+    // link authorship
+    for (int i = 0; i < TEST_SIZE; i++) {
+        addP2Authorship(db2, i, i + 10000);
+    }
+
+    end = clock();
+    executionTime2 = ((double)(end - start)) / CLOCKS_PER_SEC;
+   
+    printf("Project 2 Execution Time: %f seconds\n", executionTime2);
+
+    min = (executionTime < executionTime2) ? executionTime : executionTime2;
+    Sleep(3000);
+
+    printf("...and the winner is: \n");
+    Sleep(2000);
+
+    printf(". ");
+    Sleep(2000);
+
+    printf(". ");
+    Sleep(2000);
+
+    printf(". ");
+    Sleep(2000);
+
+
+    printf((executionTime < executionTime2) ? "Project 1!!!!\n":"Project 2!!!!\n");
+    Sleep(3000);
+
+
+    printf("\n------[performance testing complete]------\n");
+
+
+
+}
+
+
+
+
+
 
 
 //  bst tests
@@ -247,6 +345,8 @@ void testAll() {
     database2_testing();
     testBST();
     hashtableTesting();
+    performanceTesting();
+
 
 }
 
