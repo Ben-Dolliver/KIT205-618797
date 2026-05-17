@@ -34,25 +34,28 @@ typedef struct Database {
 
 
 
-// =========================
+
 // FUNCTION DECLARATIONS
-// =========================
-
-
 void databaseTesting();
 
+
+//  create functions
 Author* createAuthor(int id);
 Paper* createPaper(int id);
 Database* createDatabase();
 
+//  find functions
 Author* findAuthor(Database* db, int id);
 Paper* findPaper(Database* db, int id);
 
+//  add functions
 void addAuthor(Database* db, int id);
 void addPaper(Database* db, int id);
 
+//  linking function
 void addAuthorship(Database* db, int authorID, int paperID);
 
+//  print functions
 void printAuthors(Database* db);
 void printPapers(Database* db);
 
