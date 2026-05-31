@@ -89,3 +89,6 @@ double* calculate_pagerank(Graph* self, int iterations) {
     return pagerank;
     free(pagerank);
 }
+
+
+

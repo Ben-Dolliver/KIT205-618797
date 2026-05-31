@@ -3,9 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
-int main() {
+int graph_test() {
 
     Graph G;        //  graph
     int result;     //  result
@@ -14,11 +12,9 @@ int main() {
     //int weight;     //  vertex  weight, redundant currently 
 
 
-    printf("-----[Week 8 Graphs Start]----- \n\n");
-
     // Open file and error check 
-    FILE* file = fopen("C:/Users/Ben Dover/Documents/School/KIT205/datasets/musae_git_edges.csv", "r");
-    //FILE* file = fopen("test.txt", "r");
+    //FILE* file = fopen("../../datasets/musae_git_edges.csv", "r");
+    FILE* file = fopen("test.txt", "r");
 
     if (!file) {    //  Error handling
         printf("Error opening file!\n");
@@ -83,8 +79,9 @@ int main() {
 
 
     printf("\nIn-Degrees:\n");
-    /*  finish & shutdown   */
 
+
+    /*  finish & shutdown   */
     //  free all edge nodes
     for (int i = 0; i < G.V; i++) {    //  modify this one for display length c.g. (i < 20 &&)
 
@@ -106,6 +103,19 @@ int main() {
     free(indegree);
     free(pagerank);
     fclose(file);
+
+}
+
+
+
+int main() {
+
+
+
+
+    printf("-----[Week 8 Graphs Start]----- \n\n");
+    graph_test();
+
     printf("\n-----[Week 8 Graphs Finish]----- \n\n");
     return 0;
 }
