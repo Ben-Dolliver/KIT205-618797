@@ -91,4 +91,27 @@ double* calculate_pagerank(Graph* self, int iterations) {
 }
 
 
+//  Cannot be used currently for assignment algorithm but might become useful for something adjacent 
+int pageRank_test(Graph* self, int iterations){
 
+    Graph G = *self;        //  graph
+
+
+    double* pagerank = calculate_pagerank(&G, 10);
+
+    if (!pagerank) {    //  Error handling 
+        printf("Error in pagerank\n");
+        return 1;
+    }
+
+    printf("\nPageRanks:\n");
+
+    //  modify this one for display length c.g. (i < 20 &&)
+    for (int i = 0; i < G.V; i++) {   //  print pagerank 
+        printf("Vertex %d: %.4f\n", i, pagerank[i]);
+    }
+
+    free(pagerank);
+    
+    return 0;
+}
