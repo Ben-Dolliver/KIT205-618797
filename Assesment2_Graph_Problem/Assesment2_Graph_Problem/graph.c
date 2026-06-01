@@ -1,7 +1,7 @@
-
 #include "graph.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 
@@ -88,6 +88,26 @@ double* calculate_pagerank(Graph* self, int iterations) {
     free(sums);
     return pagerank;
     free(pagerank);
+}
+
+
+// free memory 
+void free_graph(Graph* self) {
+
+    for (int i = 0; i < self->V; i++) {
+        Node* current = self->edges[i].head;
+        while (current != NULL) {
+            Node* temp = current;
+            current = current->next;
+            free(temp);
+        }
+    }
+
+    free(self->edges);
+    free(self->papers);
+    self->edges = NULL;
+    self->papers = NULL;
+    self->V = 0;
 }
 
 
