@@ -26,9 +26,13 @@ typedef struct {
 } Graph;
 
 
-void add_edge(Graph* self, int from, int to, int w);
-double* calculate_pagerank(Graph* self, int iterations);
+//  dijkstra algorithm functions 
+int* dijkstra(Graph* self, int src);
+void dijkstra_print(Graph* self, int src, int dest);
 
+//  generic graph functions
 void free_graph(Graph* self);
+void add_edge(Graph* self, int from, int to, int w);
+double* calculate_pagerank(Graph* self, int iterations); // obsolete 
 
 #endif

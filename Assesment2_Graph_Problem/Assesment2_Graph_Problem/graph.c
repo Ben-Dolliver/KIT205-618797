@@ -111,27 +111,58 @@ void free_graph(Graph* self) {
 }
 
 
-//  Cannot be used currently for assignment algorithm but might become useful for something adjacent 
-int pageRank_test(Graph* self, int iterations){
+//  find the shortest distance to a selectd node using Dijkstra's algorithm
+int* dijkstra(Graph* self, int src) {
 
-    Graph G = *self;        //  graph
+    int V = self->V;
+    int* distance = malloc(V * sizeof(int));
+    int* visited = malloc(V * sizeof(int));
+	int current;          //  current node being processed 
+	int w;                //  weight of edge
+	int v;                //  destination node of edge
 
+    //  initialise all starting distances to infinity 
+    for (int i = 0; i < V; i++) {
+        distance[i] = 999999;
+        visited[i] = 0;
+    }
+    distance[src] = 0;
 
-    double* pagerank = calculate_pagerank(&G, 10);
+    for (int i = 0; i < V - 1; i++) {
+        //  find unvisited node with smallest the distance
+        current = -1;
+        for (int j = 0; j < V; j++) {
+            if (!visited[j] && (current == -1 || distance[j] < distance[current]))
+                current = j;
+        }
+        if (distance[current] == 999999) break;  //   remaining nodes unreachable
+        visited[current] = 1;
 
-    if (!pagerank) {    //  Error handling 
-        printf("Error in pagerank\n");
-        return 1;
+        //  update neighbours
+        for (Node* cur = self->edges[current].head; cur != NULL; cur = cur->next) {
+            v = cur->to;
+            w = cur->weight; 
+            if (!visited[v] && distance[current] + w < distance[v]) {
+                distance[v] = distance[current] + w;
+            }
+        }
+    }
+    free(visited);
+    return distance;
+}
+
+//  show shortest path from source to destination using Dijkstra's algorithm
+void dijkstra_print(Graph* self, int src, int dest) {
+    int* dist = dijkstra(self, src);
+
+    printf("\nShortest path from %d to %d: ", src, dest);
+
+    if (dist[dest] == 999999)
+        printf("no path found\n");
+
+    else {
+    printf("cost %d\n", dist[dest]);
     }
 
-    printf("\nPageRanks:\n");
-
-    //  modify this one for display length c.g. (i < 20 &&)
-    for (int i = 0; i < G.V; i++) {   //  print pagerank 
-        printf("Vertex %d: %.4f\n", i, pagerank[i]);
-    }
-
-    free(pagerank);
-    
-    return 0;
+    free(dist);
 }

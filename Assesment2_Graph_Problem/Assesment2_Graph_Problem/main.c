@@ -8,7 +8,8 @@ int main() {
 
     printf("-----[Week 8 Graphs Start]----- \n\n");
 
-    graph_test();
+    //graph_test();
+    test_dijkstra();
 
     printf("\n-----[Week 8 Graphs Finish]----- \n\n");
 
