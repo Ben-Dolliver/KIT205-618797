@@ -166,3 +166,48 @@ void dijkstra_print(Graph* self, int src, int dest) {
 
     free(dist);
 }
+
+
+
+//  load papers from file into graph
+void load_papers(Graph* self, const char* filename) {
+
+    int idx,        //  paper variable    
+        paperID,    
+        authorID,   
+        year;       
+
+
+    FILE* file = fopen(filename, "r");
+    if (!file) {
+        printf("Error opening papers file: %s\n", filename);
+        return;
+    }
+
+    //  skip header line
+    char buffer[512];
+    fgets(buffer, sizeof(buffer), file);
+
+    while (fscanf_s(file, "%d %d %d %d", &idx, &paperID, &authorID, &year) == 4) {
+        if (idx >= 0 && idx < self->V) {
+            self->papers[idx].id = idx;
+            self->papers[idx].paperID = paperID;
+            self->papers[idx].authorID = authorID;
+            self->papers[idx].year = year;
+        }
+    }
+    fclose(file);
+
+
+}
+
+
+
+void print_papers(Graph* self) {
+
+    printf("\nPapers:\n");
+	for (int i = 0; i < self->V; i++) {
+		Paper* p = &self->papers[i];
+		printf("ID: %d, PaperID: %d, AuthorID: %d, Year: %d\n", p->id, p->paperID, p->authorID, p->year);
+	}
+}

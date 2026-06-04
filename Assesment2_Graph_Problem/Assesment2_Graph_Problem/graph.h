@@ -13,11 +13,11 @@ typedef struct {
 
 //  academic paper structure
 typedef struct {
-    int   id;
-    char  title[256];
-    char  author[128];
-    int   year;
-} Paper;    
+    int id;
+    int paperID;
+    int authorID;
+    int year;
+} Paper;
 
 typedef struct {
     int        V;
@@ -34,5 +34,8 @@ void dijkstra_print(Graph* self, int src, int dest);
 void free_graph(Graph* self);
 void add_edge(Graph* self, int from, int to, int w);
 double* calculate_pagerank(Graph* self, int iterations); // obsolete 
+
+void load_papers(Graph* self, const char* filename);
+void print_papers(Graph* self);
 
 #endif

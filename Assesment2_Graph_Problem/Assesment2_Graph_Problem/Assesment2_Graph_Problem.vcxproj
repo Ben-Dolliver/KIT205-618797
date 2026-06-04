@@ -142,9 +142,6 @@
     <ClInclude Include="graph.h" />
     <ClInclude Include="tests.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="papers.json" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

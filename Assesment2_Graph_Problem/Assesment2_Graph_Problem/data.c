@@ -8,6 +8,19 @@
 #define MAX_PAPERS 100
 #define FILE_NAME "test_papers.txt"
 
+static const char* topics[] = { "Graph", "Network", "Citation", "Algorithm", "Data Structure",
+                                  "Shortest Path", "Neural", "Sorting", "Tree", "Search" };
+static const char* methods[] = { "Analysis", "Survey", "Review", "Study", "Investigation",
+                                  "Comparison", "Evaluation", "Approach", "Framework", "Model" };
+
+
+//  generate a random paper title from word banks
+void rand_title(char* buffer) {
+    int t = rand() % 10;
+    int m = rand() % 10;
+    sprintf_s(buffer, 128, "%s %s", topics[t], methods[m]);
+}
+
 //  check if the given ID already exists in the file for either an AUTHOR or PAPER entry
 int exists(FILE* file, int id) {
 
@@ -44,7 +57,6 @@ int createRandAuthor(FILE* file) {
         authorID = rand() % MAX_AUTHORS + 100;
         unique = !exists(file, authorID);
 
-
     }
 
     // move back to end before writing
@@ -62,16 +74,12 @@ int createRandPaper(FILE* file) {
 
 	int unique = 0;     //  is is the paper ID unique
     int paperID;        //  ID of the paper
-    int year;           //  year of publication
 
 
     // generate unique paper ID
     while (!unique) {
 
         paperID = rand() % 100000 + 1000;
-		
-
-
         unique = !exists(file, paperID);
     }
 
@@ -91,7 +99,7 @@ void clearData() {
     FILE* file = fopen(FILE_NAME, "w");
 
     if (file == NULL) {
-        printf("Failed to clear file\n");
+        printf_s("Failed to clear file\n");
         return;
     }
 
@@ -111,7 +119,7 @@ void printData() {
     char line[256];
 
     while (fgets(line, sizeof(line), file) != NULL) {
-        printf("%s", line);
+        printf_s("%s", line);
     }
 
     fclose(file);
@@ -125,28 +133,38 @@ void create_data() {
     srand((unsigned int)time(NULL));
 
     //  open file
-    FILE* file = fopen("test.txt", "w");
+    FILE* file = fopen("test_papers.txt", "w");
 
     if (file == NULL) {
 
-        printf("Error opening file\n");
+        printf_s("Error opening file\n");
         return;
 
     }
 
+    //  write header
+    fprintf_s(file, "id,paperID,authorID,year\n");
 
-    //  create random authors
-    for (int i = 0; i < MAX_AUTHORS; i++) {
 
-        createRandAuthor(file);
+    //  write each paper
+    for (int i = 0; i < MAX_PAPERS; i++) {
+        char title[128];
+        int author;
+        int paper;
+        int  year = rand() % 30 + 1994;   // 1994 - 2024
+
+
+        //  create random authors
+        author = createRandAuthor(file);
+
+
+        //  create random papers
+        paper = createRandPaper(file);
+        
+        fprintf_s(file, "%d,%s,%s,%d\n", i, paper, author, year);
     }
 
 
-    //  create random papers
-    for(int i = 0; i < MAX_PAPERS; i++) {
-
-        createRandPaper(file);
-    }
 
 
     fclose(file);
