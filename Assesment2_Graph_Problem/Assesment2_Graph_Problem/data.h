@@ -1,9 +1,14 @@
 #ifndef DATA_H
 #define DATA_H
 
+#define MAX_AUTHORS 100
+#define MAX_PAPERS 100
+#define PAPER_FILE "test_papers.txt"
+#define EDGES_FILE "test_edges.txt"
+
+void create_data();
 void create_papers();
-
-void clearData();
-void printData();
-
+void create_edges();
+void print_data();
+void clear_data();
 #endif

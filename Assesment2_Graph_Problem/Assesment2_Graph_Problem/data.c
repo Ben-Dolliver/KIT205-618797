@@ -4,9 +4,6 @@
 #include <time.h>
 #include "data.h"
 
-#define MAX_AUTHORS 100
-#define MAX_PAPERS 100
-#define FILE_NAME "test_papers.txt"
 
 static const char* topics[] = { "Graph", "Network", "Citation", "Algorithm", "Data Structure",
                                   "Shortest Path", "Neural", "Sorting", "Tree", "Search" };
@@ -66,10 +63,10 @@ int rand_author_id() {
     return id;
 }
 
-
+//  clear all data from file 
 void clearData() {
 
-    FILE* file = fopen(FILE_NAME, "w");
+    FILE* file = fopen(PAPER_FILE, "w");
 
     if (file == NULL) {
         printf_s("Failed to clear file\n");
@@ -79,10 +76,10 @@ void clearData() {
     fclose(file);
 }
 
-
+// print all of the data 
 void printData() {
 
-    FILE* file = fopen(FILE_NAME, "r");
+    FILE* file = fopen(PAPER_FILE, "r");
 
     if (file == NULL) {
         printf("Failed to open file\n");
@@ -100,7 +97,7 @@ void printData() {
 }
 
 
-//  create test_papers.txt 
+//  create test_papers.txt data
 void create_papers() {
 
     //  reset tracking arrays
@@ -111,13 +108,14 @@ void create_papers() {
 
     srand((unsigned int)time(NULL));
 
-    FILE* file = fopen(FILE_NAME, "w");
+	//  error check 
+    FILE* file = fopen(PAPER_FILE, "w");
     if (!file) {
-        printf("Error opening file: %s\n", FILE_NAME);
+        printf("Error opening file: %s\n", PAPER_FILE);
         return;
     }
 
-    //  header line - skipped by load_papers
+    //  header line
     fprintf(file, "id paperID authorID year\n");
 
     //  pre-generate unique author IDs
@@ -126,10 +124,10 @@ void create_papers() {
         authors[i] = rand_author_id();
     }
 
-    //  write each paper — space separated to match fscanf_s "%d %d %d %d"
+    //  write each paper 
     for (int i = 0; i < MAX_PAPERS; i++) {
         int paperID = rand_paper_id();
-        int authorID = authors[rand() % MAX_AUTHORS];  //  pick random existing author
+        int authorID = authors[rand() % MAX_AUTHORS];  
         int year = rand() % 30 + 1994;             //  1994 - 2024
 
         fprintf(file, "%d %d %d %d\n", i, paperID, authorID, year);
@@ -137,5 +135,44 @@ void create_papers() {
 
     fclose(file);
     printf("Papers written to %s (%d papers, %d authors)\n",
-        FILE_NAME, MAX_PAPERS, MAX_AUTHORS);
+        PAPER_FILE, MAX_PAPERS, MAX_AUTHORS);
+}
+
+
+
+//  create test_edges.txt data with random edges between papers
+void create_edges() {
+
+    srand((unsigned int)time(NULL));
+
+	//  error check
+    FILE* file = fopen(EDGES_FILE, "w");
+    if (!file) {
+        printf("Error opening file: %s\n", EDGES_FILE);
+        return;
+    }
+
+    //  header line 
+    fprintf(file, "from,to\n");
+
+    //  each paper gets 1-20 random outgoing edges
+    for (int i = 0; i < MAX_PAPERS; i++) {
+        int numEdges = rand() % 20 + 1;
+        for (int j = 0; j < numEdges; j++) {
+            int to = rand() % MAX_PAPERS;
+            //  avoid self loops
+            if (to != i) {
+                fprintf(file, "%d,%d\n", i, to);
+            }
+        }
+    }
+
+    fclose(file);
+    printf("Edges written to %s\n", EDGES_FILE);
+}
+
+//  create both files
+void create_data() {
+    create_papers();
+    create_edges();
 }
