@@ -38,4 +38,6 @@ double* calculate_pagerank(Graph* self, int iterations); // obsolete
 void load_papers(Graph* self, const char* filename);
 void print_papers(Graph* self);
 
+
+
 #endif

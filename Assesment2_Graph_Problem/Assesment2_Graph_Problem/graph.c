@@ -201,8 +201,6 @@ void load_papers(Graph* self, const char* filename) {
 
 }
 
-
-
 void print_papers(Graph* self) {
 
     printf("\nPapers:\n");
@@ -210,4 +208,35 @@ void print_papers(Graph* self) {
 		Paper* p = &self->papers[i];
 		printf("ID: %d, PaperID: %d, AuthorID: %d, Year: %d\n", p->id, p->paperID, p->authorID, p->year);
 	}
+}
+
+//  load edges from file into graph
+//  edge weight is the difference in publication year between two papers
+void load_edges(Graph* self, const char* filename) {
+
+    FILE* file = fopen(filename, "r");
+    if (!file) {
+        printf("Error opening edges file: %s\n", filename);
+        return;
+    }
+
+    //  skip header line
+    char buffer[512];
+    fgets(buffer, sizeof(buffer), file);
+
+
+	// for each line read from file, add edge to graph with weight as year difference
+    int from, to;
+    while (fscanf_s(file, "%d,%d", &from, &to) == 2) {
+        if (from >= 0 && from < self->V &&
+            to >= 0 && to < self->V) {
+            //  weight = absolute year difference between papers
+            int weight = abs(self->papers[from].year - self->papers[to].year);
+            add_edge(self, from, to, weight);
+        }
+    }
+
+    fclose(file);
+    printf("Loaded edges from %s\n", filename);
+
 }
