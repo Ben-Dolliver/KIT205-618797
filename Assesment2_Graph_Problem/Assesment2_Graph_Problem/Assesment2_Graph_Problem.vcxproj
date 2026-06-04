@@ -127,14 +127,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="data.c" />
     <ClCompile Include="graph.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="tests.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="test.txt" />
+    <Text Include="test_edges.txt" />
+    <Text Include="test_papers.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="data.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="tests.h" />
   </ItemGroup>
