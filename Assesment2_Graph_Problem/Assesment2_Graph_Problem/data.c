@@ -47,7 +47,7 @@ int author_id_exists(int id) {
 int rand_paper_id() {
     int id;
     do {
-        id = rand() % 90000 + 10000;   //  5 digit ID 10000 - 99999
+        id = rand() % MAX_PAPERS + 10000;   //  5 digit ID 10000 - 99999
     } while (paper_id_exists(id));
     usedPaperIDs[paperCount++] = id;
     return id;
@@ -57,7 +57,7 @@ int rand_paper_id() {
 int rand_author_id() {
     int id;
     do {
-        id = rand() % 900 + 100;       //  3 digit ID 100 - 999
+        id = rand() % MAX_AUTHORS + 100;       //  3 digit ID 100 - 999
     } while (author_id_exists(id));
     usedAuthorIDs[authorCount++] = id;
     return id;
@@ -85,7 +85,7 @@ void printData() {
         printf("Failed to open file\n");
         return;
     }
-
+    
     char line[256];
 
     while (fgets(line, sizeof(line), file) != NULL) {
@@ -98,11 +98,13 @@ void printData() {
 
 
 //  create test_papers.txt data
-void create_papers() {
+void create_papers(int numPapers, int numAuthors) {
 
     //  reset tracking arrays
     paperCount = 0;
     authorCount = 0;
+
+    // dynamically allocate instead of fixed values
     memset(usedPaperIDs, 0, sizeof(usedPaperIDs));
     memset(usedAuthorIDs, 0, sizeof(usedAuthorIDs));
 
@@ -119,29 +121,30 @@ void create_papers() {
     fprintf(file, "id paperID authorID year\n");
 
     //  pre-generate unique author IDs
-    int authors[MAX_AUTHORS];
-    for (int i = 0; i < MAX_AUTHORS; i++) {
+    int* authors = malloc(numAuthors * sizeof(int));
+    for (int i = 0; i < numAuthors; i++) {
         authors[i] = rand_author_id();
     }
 
     //  write each paper 
-    for (int i = 0; i < MAX_PAPERS; i++) {
+    for (int i = 0; i < numPapers; i++) {
         int paperID = rand_paper_id();
-        int authorID = authors[rand() % MAX_AUTHORS];  
-        int year = rand() % 30 + 1994;             //  1994 - 2024
+        int authorID = authors[rand() % numAuthors];
+        int year = rand() % 80 + 1956;             //  1954 - 2025
 
         fprintf(file, "%d %d %d %d\n", i, paperID, authorID, year);
     }
 
+    free(authors);
     fclose(file);
     printf("Papers written to %s (%d papers, %d authors)\n",
-        PAPER_FILE, MAX_PAPERS, MAX_AUTHORS);
+        PAPER_FILE, numPapers, numAuthors);
 }
 
 
 
 //  create test_edges.txt data with random edges between papers
-void create_edges() {
+void create_edges(int numPapers, int numEdges) {
 
     int idx, paperID, authorID, year;   //  papers data
 	int weight;                         //  edge weight = year difference between papers    
@@ -160,7 +163,7 @@ void create_edges() {
 
 
     //  initialise years
-    int years[MAX_PAPERS];
+    int* years = malloc(numPapers * sizeof(int));
 
     //  error check
     FILE* papers = fopen(PAPER_FILE, "r");
@@ -176,7 +179,7 @@ void create_edges() {
 
     //  read all years into array
     while (fscanf_s(papers, "%d %d %d %d", &idx, &paperID, &authorID, &year) == 4) {
-        if (idx >= 0 && idx < MAX_PAPERS) {
+        if (idx >= 0 && idx < numPapers) {
             years[idx] = year;
         }
     }
@@ -186,13 +189,13 @@ void create_edges() {
     //  each paper can only cite papers published before it
     int edgeCount = 0;
 
-    for (int i = 0; i < MAX_PAPERS; i++) {
-        int numEdges = rand() % 20 + 1;     //  1-20 citations per paper
+    for (int i = 0; i < numPapers; i++) {
+        int Edges = rand() % numEdges + 1;     //  1-20 citations per paper
         int added = 0;
         int attempts = 0;
 
-        while (added < numEdges && attempts < 20) {
-            int to = rand() % MAX_PAPERS;
+        while (added < Edges && attempts < numPapers) {
+            int to = rand() % numPapers;
             attempts++;
 
             //  only cite papers published strictly before this one
@@ -207,12 +210,13 @@ void create_edges() {
         }
     }
 
+    free(years);
     fclose(file);
     printf("Edges written to %s\n", EDGES_FILE);
 }
 
 //  create both files
-void create_data() {
-    create_papers();
-    create_edges();
+void create_data(int numPapers, int numAuthors, int maxEdges) {
+    create_papers(numPapers, numAuthors);
+    create_edges(numPapers, maxEdges);
 }
