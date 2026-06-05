@@ -199,6 +199,7 @@ void load_papers(Graph* self, const char* filename) {
         }
     }
     fclose(file);
+    file = NULL;
 
 
 }
@@ -241,8 +242,11 @@ void load_edges(Graph* self, const char* filename) {
     }
 
     fclose(file);
-    printf("Loaded edges from %s\n", filename);
-    printf("Loaded %d edges from %s\n", count, filename);
+    file = NULL;
+
+	//  debug print statement
+    /*printf("Loaded edges from %s\n", filename);
+    printf("Loaded %d edges from %s\n", count, filename);*/
 
 }
 
@@ -295,9 +299,11 @@ void print_references(Graph* self) {
     //  allocate in degrees and error check 
     int* indegree = malloc(self->V * sizeof(int));
     int* outdegree = malloc(self->V * sizeof(int));
-
-    if (!indegree) {
+    
+    if (!indegree || !outdegree) {
         printf("Memory allocation failed\n");
+        free(indegree);
+        free(outdegree);
         return;
     }
 
@@ -329,4 +335,28 @@ void print_references(Graph* self) {
     free(indegree);
     free(outdegree);
 
+}
+
+
+//  calculate the average year distance for the shortest Path calculation usiing dijkstras algorithm 
+double average_shortest_path(Graph* self) {
+	int total = 0;  //  total distance
+    int count = 0;  //  number of iterations 
+
+
+    // a random sample of 50 nodes 
+    for (int s = 0; s < 50; s++) {
+        int i = rand() % self->V;
+        int* dist = dijkstra(self, i);
+        for (int j = 0; j < self->V; j++) {
+            if (i != j && dist[j] != 999999) {
+                total += dist[j];
+                count++;
+            }
+        }
+        free(dist);
+    }
+    
+    if (count == 0) return -1;   //  no paths found
+    return (double)total / count;
 }

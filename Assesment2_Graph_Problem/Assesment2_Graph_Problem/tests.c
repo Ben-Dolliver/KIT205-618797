@@ -54,7 +54,8 @@ int graph_test(Graph* G) {
     return 0;
 }
 
-//    testing for dijkstra's algorithm, currently using a simple graph with known shortest paths
+//  chosen algorithm test  
+//  testing for dijkstra's algorithm, currently using a simple graph with known shortest paths
 int test_dijkstra() {
 
     printf("\n=== TEST: Dijkstra's Algorithm ===\n");
@@ -195,5 +196,65 @@ int pageRank_test(Graph* self, int iterations) {
     return 0;
 }
 
+//  
+void investigate_path_length() {
 
 
+    printf("\n=== INVESTIGATION: Graph Size vs Edge Count vs Avg Path Length ===\n");
+    printf("%-10s %-10s %-10s %-10s\n",
+        "Nodes", "MaxEdges", "AvgPath", "Connected%");
+    printf("------------------------------------------\n");
+
+    //  chosen graph sizes and edge counts to test
+    int sizes[] = { 100, 500, 1000 };
+    int maxEdges[] = { 5, 10, 15 };
+
+	//  loop through combinations of sizes and edge counts
+    for (int s = 0; s < 3; s++) {
+        for (int e = 0; e < 3; e++) {
+            int numPapers = sizes[s];
+            int numEdges = maxEdges[e];
+
+            //  generate graph with these parameters
+            create_data(numPapers, numPapers / 5, numEdges);
+
+
+            //  load into graph
+            Graph G;
+            G.V = numPapers;
+            G.edges = malloc(G.V * sizeof(EdgeList));
+            G.papers = malloc(G.V * sizeof(Paper));
+            for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
+
+            load_papers(&G, PAPER_FILE);
+            load_edges(&G, EDGES_FILE);
+
+            //  calculate average path length
+            double avg = average_shortest_path(&G);
+
+            //  calculate connectivity percentage
+            int reachable = 0;
+            int total = 0;
+            for (int i = 0; i < G.V; i++) {
+                int* dist = dijkstra(&G, i);
+                for (int j = 0; j < G.V; j++) {
+                    if (i != j) {
+                        total++;
+                        if (dist[j] != 999999) reachable++;
+                    }
+                }
+                free(dist);
+            }
+            double connectivity = (double)reachable / total * 100;
+
+
+            printf("%-10d %-10d %-10.2f %-10.1f%%\n",
+                numPapers, numEdges, avg, connectivity);
+
+            free_graph(&G);
+
+        }
+
+
+    }
+}

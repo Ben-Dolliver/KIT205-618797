@@ -7,6 +7,8 @@
 
 int main() {
 
+    srand((unsigned int)time(NULL));
+
     //  initialise values 
     int numPapers = 500;
     int numAuthors = 50;
@@ -17,24 +19,18 @@ int main() {
     printf("-----[Week 8 Graphs Start]----- \n\n");
 
 	//test_dijkstra();
-    create_data(numPapers, numAuthors, maxEdges);
+ //   create_data(numPapers, numAuthors, maxEdges);
 
-    Graph G;
-    G.V = numPapers;
-    G.edges = malloc(G.V * sizeof(EdgeList));
-    G.papers = malloc(G.V * sizeof(Paper));
-    for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
 
-    load_papers(&G, PAPER_FILE);
-    load_edges(&G, EDGES_FILE);
+	//print_paper(&G, 25);   
+ //   print_paper_citations(&G, 25);
 
-	print_paper(&G, 25);   
-    print_paper_citations(&G, 25);
+ //   //graph_test(&G);      // pass G in
+ //   print_references(&G);
+ //   print_papers(&G);
+ //   dijkstra_print(&G, 0, 100);
 
-    //graph_test(&G);      // pass G in
-    print_references(&G);
-    print_papers(&G);
-    dijkstra_print(&G, 0, 100);
+    investigate_path_length();
 
 
 

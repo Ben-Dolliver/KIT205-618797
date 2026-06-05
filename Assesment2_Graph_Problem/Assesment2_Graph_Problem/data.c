@@ -137,8 +137,9 @@ void create_papers(int numPapers, int numAuthors) {
 
     free(authors);
     fclose(file);
-    printf("Papers written to %s (%d papers, %d authors)\n",
-        PAPER_FILE, numPapers, numAuthors);
+
+    //printf("Papers written to %s (%d papers, %d authors)\n",      //  good for debugging 
+    //    PAPER_FILE, numPapers, numAuthors);
 }
 
 
@@ -149,12 +150,11 @@ void create_edges(int numPapers, int numEdges) {
     int idx, paperID, authorID, year;   //  papers data
 	int weight;                         //  edge weight = year difference between papers    
 
-    srand((unsigned int)time(NULL));
 
 	//  error check
     FILE* file = fopen(EDGES_FILE, "w");
     if (!file) {
-        printf("Error opening file: %s\n", EDGES_FILE);
+        printf("Error opening edges file: %s\n", EDGES_FILE);
         return;
     }
 
@@ -212,7 +212,7 @@ void create_edges(int numPapers, int numEdges) {
 
     free(years);
     fclose(file);
-    printf("Edges written to %s\n", EDGES_FILE);
+    //printf("Edges written to %s\n", EDGES_FILE);      // debug
 }
 
 //  create both files

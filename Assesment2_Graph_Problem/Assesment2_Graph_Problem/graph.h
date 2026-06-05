@@ -29,6 +29,7 @@ typedef struct {
 //  dijkstra algorithm functions 
 int* dijkstra(Graph* self, int src);
 void dijkstra_print(Graph* self, int src, int dest);
+double average_shortest_path(Graph* self);
 
 //  generic graph functions
 void free_graph(Graph* self);
@@ -44,6 +45,8 @@ void print_references(Graph* self);
 void print_papers(Graph* self);
 void print_paper_citations(Graph* self, int id);
 void print_paper(Graph* self, int id);
+
+
 
 
 #endif

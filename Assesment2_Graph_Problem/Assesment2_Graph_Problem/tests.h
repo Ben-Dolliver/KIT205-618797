@@ -8,3 +8,5 @@ int graph_test();
 
 //	testing for dijkstra's algorithm 
 int test_dijkstra();
+
+void investigate_path_length();
