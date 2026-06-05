@@ -155,6 +155,17 @@ void create_edges() {
     //  header line 
     fprintf(file, "from,to\n");
 
+
+    //  read years from papers file to compare dates
+    int years[MAX_PAPERS];
+    FILE* papers = fopen(PAPER_FILE, "r");
+    if (!papers) {
+        printf("Error opening papers file - run create_papers first\n");
+        fclose(file);
+        return;
+    }
+
+
     //  each paper gets 1-20 random outgoing edges
     for (int i = 0; i < MAX_PAPERS; i++) {
         int numEdges = rand() % 20 + 1;

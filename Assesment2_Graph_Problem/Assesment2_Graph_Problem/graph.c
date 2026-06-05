@@ -161,7 +161,7 @@ void dijkstra_print(Graph* self, int src, int dest) {
         printf("no path found\n");
 
     else {
-    printf("cost %d\n", dist[dest]);
+    printf("years %d\n", dist[dest]);
     }
 
     free(dist);
@@ -239,4 +239,45 @@ void load_edges(Graph* self, const char* filename) {
     fclose(file);
     printf("Loaded edges from %s\n", filename);
 
+}
+
+//  print specific paper
+void print_paper(Graph* self, int id) {
+
+    if (id < 0 || id >= self->V) {
+        printf("Invalid paper ID: %d\n", id);
+        return;
+    }
+    printf("  [%d] PaperID: %d | AuthorID: %d | Year: %d\n",
+        id,
+        self->papers[id].paperID,
+        self->papers[id].authorID,
+        self->papers[id].year);
+}
+
+//  print all nodes linked to specific node 
+void print_adjacent(Graph* self, int id) {
+
+	//  invalid
+    if (id < 0 || id >= self->V) {
+        printf("Invalid node ID: %d\n", id);
+        return;
+    }
+
+    printf("\nPaper %d cites:\n", id);
+    print_paper(self, id);
+
+    Node* current = self->edges[id].head;
+    //  no references 
+    if (current == NULL) {
+        printf("  No citations\n");
+        return;
+    }
+
+    //  loop through all connected nodes
+    while (current != NULL) {
+        printf("  --> ");
+        print_paper(self, current->to);
+        current = current->next;
+    }
 }
