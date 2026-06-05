@@ -299,11 +299,9 @@ void print_references(Graph* self) {
     //  allocate in degrees and error check 
     int* indegree = malloc(self->V * sizeof(int));
     int* outdegree = malloc(self->V * sizeof(int));
-    
-    if (!indegree || !outdegree) {
+
+    if (!indegree) {
         printf("Memory allocation failed\n");
-        free(indegree);
-        free(outdegree);
         return;
     }
 

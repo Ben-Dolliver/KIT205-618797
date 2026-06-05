@@ -196,7 +196,7 @@ int pageRank_test(Graph* self, int iterations) {
     return 0;
 }
 
-//  
+//  specific problem unit test 
 void investigate_path_length() {
 
 
@@ -206,12 +206,12 @@ void investigate_path_length() {
     printf("------------------------------------------\n");
 
     //  chosen graph sizes and edge counts to test
-    int sizes[] = { 100, 500, 1000 };
-    int maxEdges[] = { 5, 10, 15 };
+    int sizes[] = { 10, 50, 200, 400 };
+    int maxEdges[] = { 5, 10, 15, 20 };
 
 	//  loop through combinations of sizes and edge counts
-    for (int s = 0; s < 3; s++) {
-        for (int e = 0; e < 3; e++) {
+    for (int s = 0; s < 4; s++) {
+        for (int e = 0; e < 4; e++) {
             int numPapers = sizes[s];
             int numEdges = maxEdges[e];
 
