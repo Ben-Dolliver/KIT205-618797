@@ -227,17 +227,22 @@ void load_edges(Graph* self, const char* filename) {
 
 	// for each line read from file, add edge to graph with weight as year difference
     int from, to;
-    while (fscanf_s(file, "%d,%d", &from, &to) == 2) {
+    int count = 0;    //  debug counter
+
+    while (fscanf_s(file, "%d %d", &from, &to) == 2) {
         if (from >= 0 && from < self->V &&
             to >= 0 && to < self->V) {
             //  weight = absolute year difference between papers
             int weight = abs(self->papers[from].year - self->papers[to].year);
             add_edge(self, from, to, weight);
+            count++;
+
         }
     }
 
     fclose(file);
     printf("Loaded edges from %s\n", filename);
+    printf("Loaded %d edges from %s\n", count, filename);
 
 }
 
@@ -280,4 +285,36 @@ void print_adjacent(Graph* self, int id) {
         print_paper(self, current->to);
         current = current->next;
     }
+}
+
+
+void print_indegrees(Graph* self) {
+
+    //  allocate in degrees and error check 
+    int* indegree = malloc(self->V * sizeof(int));
+    if (!indegree) {
+        printf("Memory allocation failed\n");
+        return;
+    }
+
+    //  initialise all in degree to 0
+    for (int i = 0; i < self->V; i++) indegree[i] = 0;
+
+    //  count incoming edges for each node
+    for (int i = 0; i < self->V; i++) {
+        for (Node* current = self->edges[i].head; current != NULL; current = current->next) {
+            indegree[current->to]++;
+        }
+    }
+
+    //  print results
+    printf("\nIn-Degrees:\n");
+    for (int i = 0; i < self->V; i++) {
+        printf("  [%d] PaperID: %d | References: %d\n",
+            i,
+            self->papers[i].paperID,
+            indegree[i]);
+    }
+
+    free(indegree);
 }

@@ -37,6 +37,10 @@ double* calculate_pagerank(Graph* self, int iterations); // obsolete
 
 //  papers functions 
 void load_papers(Graph* self, const char* filename);
+void load_edges(Graph* self, const char* filename);
+
+//  print functions
+void print_indegrees(Graph* self);
 void print_papers(Graph* self);
 void print_adjacent(Graph* self, int id);
 void print_paper(Graph* self, int id);

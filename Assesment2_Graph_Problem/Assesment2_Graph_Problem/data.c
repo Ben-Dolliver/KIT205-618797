@@ -143,6 +143,8 @@ void create_papers() {
 //  create test_edges.txt data with random edges between papers
 void create_edges() {
 
+    int idx, paperID, authorID, year;   //  papers data
+
     srand((unsigned int)time(NULL));
 
 	//  error check
@@ -156,8 +158,10 @@ void create_edges() {
     fprintf(file, "from,to\n");
 
 
-    //  read years from papers file to compare dates
+    //  initialise years
     int years[MAX_PAPERS];
+
+    //  error check
     FILE* papers = fopen(PAPER_FILE, "r");
     if (!papers) {
         printf("Error opening papers file - run create_papers first\n");
@@ -165,15 +169,36 @@ void create_edges() {
         return;
     }
 
+    //  skip header
+    char buffer[512];
+    fgets(buffer, sizeof(buffer), papers);
 
-    //  each paper gets 1-20 random outgoing edges
+    //  read all years into array
+    while (fscanf_s(papers, "%d %d %d %d", &idx, &paperID, &authorID, &year) == 4) {
+        if (idx >= 0 && idx < MAX_PAPERS) {
+            years[idx] = year;
+        }
+    }
+    fclose(papers);
+
+
+    //  each paper can only cite papers published before it
+    int edgeCount = 0;
+
     for (int i = 0; i < MAX_PAPERS; i++) {
-        int numEdges = rand() % 20 + 1;
-        for (int j = 0; j < numEdges; j++) {
+        int numEdges = rand() % 20 + 1;     //  1-20 citations per paper
+        int added = 0;
+        int attempts = 0;
+
+        while (added < numEdges && attempts < 20) {
             int to = rand() % MAX_PAPERS;
-            //  avoid self loops
-            if (to != i) {
-                fprintf(file, "%d,%d\n", i, to);
+            attempts++;
+
+            //  only cite papers published strictly before this one
+            if (to != i && years[to] < years[i]) {
+                fprintf(file, "%d %d\n", i, to);
+                added++;
+                edgeCount++;
             }
         }
     }

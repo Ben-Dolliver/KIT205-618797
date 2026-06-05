@@ -5,9 +5,10 @@
 
 
 
-int graph_test() {
+int graph_test(Graph* G) {
 
-	//  initialise graph and edge variables
+	//  initialise graph and edge variables         #### pass from main currently ####
+    /*
     Graph G;
     int in, out;
 
@@ -16,30 +17,33 @@ int graph_test() {
     G.edges = malloc(G.V * sizeof(EdgeList));
     G.papers = malloc(G.V * sizeof(Paper));
     for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
+    */
 
     //  load papers and edges from generated files
     load_papers(&G, PAPER_FILE);
     load_edges(&G, EDGES_FILE);
 
-    printf("Vertices: %d\n", G.V);
+    printf("Vertices: %d\n", G->V);
 
     //  calculate in-degrees
-    int* indegree = malloc(G.V * sizeof(int));
+    int* indegree = malloc(G->V * sizeof(int));
     if (!indegree) {
         printf("Memory allocation failed\n");
         return 1;
     }
     
-	for (int i = 0; i < G.V; i++) indegree[i] = 0;  //  initialise indegree array
-    for (int i = 0; i < G.V; i++) {
-        for (Node* current = G.edges[i].head; current != NULL; current = current->next) {
+	for (int i = 0; i < G->V; i++) indegree[i] = 0;  //  initialise indegree array
+
+	//  loop through edges and count in-degrees
+    for (int i = 0; i < G->V; i++) {
+        for (Node* current = G->edges[i].head; current != NULL; current = current->next) {
             indegree[current->to]++;
         }
     }
 
 	//  print in-degrees for each vertex
     printf("\nIn-Degrees:\n");
-    for (int i = 0; i < G.V; i++) {
+    for (int i = 0; i < G->V; i++) {
         printf("Vertex %d: %d\n", i, indegree[i]);
     }
 
