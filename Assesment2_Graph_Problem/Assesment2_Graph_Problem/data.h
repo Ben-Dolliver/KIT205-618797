@@ -5,6 +5,7 @@
 #define MAX_PAPERS 100
 #define PAPER_FILE "test_papers.txt"
 #define EDGES_FILE "test_edges.txt"
+#define SAMPLE_SIZE 20
 
 void create_data();
 void create_papers();

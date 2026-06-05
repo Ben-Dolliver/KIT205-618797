@@ -57,37 +57,114 @@ int graph_test(Graph* G) {
 //    testing for dijkstra's algorithm, currently using a simple graph with known shortest paths
 int test_dijkstra() {
 
-    printf("TEST: dijkstra... ");
+    printf("\n=== TEST: Dijkstra's Algorithm ===\n");
+    int passed = 0;
+    int failed = 0;
 
-    Graph G;
-    G.V = 4;
-    G.edges = malloc(G.V * sizeof(EdgeList));
-    G.papers = malloc(G.V * sizeof(Paper));
-    for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
-
-    add_edge(&G, 0, 1, 1);
-    add_edge(&G, 1, 2, 2);
-    add_edge(&G, 0, 2, 10);  // longer direct path
-    add_edge(&G, 2, 3, 1);
-
-    int* dist = dijkstra(&G, 0);
-
-    dijkstra_print(&G, 0, 3);
-    
-    if (dist[2] != 3) {
-        printf("FAIL (expected 3, got %d)\n", dist[2]);
-        free(dist);
-        free_graph(&G);
-        return 1;
+    //  build a small chosen graph to verify against
+    //  independent of the main graph G
+    Graph T;
+    T.V = 5;
+    T.edges = malloc(T.V * sizeof(EdgeList));
+    T.papers = malloc(T.V * sizeof(Paper));
+    for (int i = 0; i < T.V; i++) {
+        T.edges[i].head = NULL;
+        T.papers[i].year = 2000 + i;  //  years 2000-2004
     }
 
+    //  0 --(4)--> 1 --(3)--> 4
+    //  0 --(2)--> 2 --(1)--> 3 --(5)--> 4
+    //  shortest path 0 to 4 will be 0->2->3->4 = 8
+    
+    add_edge(&T, 0, 1, 4);
+    add_edge(&T, 0, 2, 2);
+    add_edge(&T, 1, 4, 3);
+    add_edge(&T, 2, 3, 1);
+    add_edge(&T, 3, 4, 5);
+
+    int* dist = dijkstra(&T, 0);
 
 	
 
+
+    printf("TEST 1: source distance is 0... ");
+    if (dist[0] == 0) {
+        printf("PASS\n");
+        passed++;
+    }
+    else {
+        printf("FAIL (expected 0, got %d)\n", dist[0]);
+        failed++;
+    }
+
+    printf("TEST 2: direct edge 0->1 costs 4... ");
+    if (dist[1] == 4) {
+        printf("PASS\n");
+        passed++;
+    }
+    else {
+        printf("FAIL (expected 4, got %d)\n", dist[1]);
+        failed++;
+    }
+
+    //  0->2->3 = 2+1 = 3
+    printf("TEST 3: cumulative path 0->2->3 costs 3... ");
+    if (dist[3] == 3) {
+        printf("PASS\n");
+        passed++;
+    }
+    else {
+        printf("FAIL (expected 3, got %d)\n", dist[3]);
+        failed++;
+    }
+
+    //  shortest path test
+    //  0->1->4 = 4+3 = 7
+    //  0->2->3->4 = 2+1+5 = 8
+    //  dijkstra should pick 7
+    printf("TEST 4: shortest path 0->4 picks cheaper route (7)... ");
+    if (dist[4] == 7) {
+        printf("PASS\n");
+        passed++;
+    }
+    else {
+        printf("FAIL (expected 7, got %d)\n", dist[4]);
+        failed++;
+    }
+
+    //  unreachable node test
+    //  no edges point TO node 0 from anywhere
+    //  so if we run from node 4, node 0 should be unreachable
     free(dist);
-    free_graph(&G);
-    printf("PASS\n");
-    return 0;
+    dist = dijkstra(&T, 4);
+    printf("TEST 5: unreachable node stays at 999999... ");
+    if (dist[0] == 999999) {
+        printf("PASS\n");
+        passed++;
+    }
+    else {
+        printf("FAIL (expected 999999, got %d)\n", dist[0]);
+        failed++;
+    }
+
+
+    printf("TEST 6: same source and dest costs 0... ");
+    if (dist[4] == 0) {
+        printf("PASS\n");
+        passed++;
+    }
+    else {
+        printf("FAIL (expected 0, got %d)\n", dist[4]);
+        failed++;
+    }
+
+    free(dist);
+    free_graph(&T);
+
+    //  summary
+    printf("\nDijkstra tests: %d passed, %d failed\n", passed, failed);
+    return failed;
+
 }
 
 

@@ -144,6 +144,7 @@ void create_papers() {
 void create_edges() {
 
     int idx, paperID, authorID, year;   //  papers data
+	int weight;                         //  edge weight = year difference between papers    
 
     srand((unsigned int)time(NULL));
 
@@ -155,7 +156,7 @@ void create_edges() {
     }
 
     //  header line 
-    fprintf(file, "from,to\n");
+    fprintf(file, "from,to,weight\n");
 
 
     //  initialise years
@@ -196,7 +197,10 @@ void create_edges() {
 
             //  only cite papers published strictly before this one
             if (to != i && years[to] < years[i]) {
-                fprintf(file, "%d %d\n", i, to);
+                
+				weight = abs(years[i] - years[to]); //  weight = year difference between papers
+                fprintf_s(file, "%d %d %d\n", i, to, weight);
+
                 added++;
                 edgeCount++;
             }

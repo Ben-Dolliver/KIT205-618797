@@ -1,8 +1,8 @@
 #include "graph.h"
+#include "data.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 
 
 
@@ -117,9 +117,11 @@ int* dijkstra(Graph* self, int src) {
     int V = self->V;
     int* distance = malloc(V * sizeof(int));
     int* visited = malloc(V * sizeof(int));
-	int current;          //  current node being processed 
-	int w;                //  weight of edge
-	int v;                //  destination node of edge
+	int current,          //  current node being processed 
+	    w,                //  weight of edge
+        v;                //  destination node of edge
+        
+
 
     //  initialise all starting distances to infinity 
     for (int i = 0; i < V; i++) {
@@ -204,7 +206,7 @@ void load_papers(Graph* self, const char* filename) {
 void print_papers(Graph* self) {
 
     printf("\nPapers:\n");
-	for (int i = 0; i < self->V; i++) {
+    for (int i = 0; i < self->V && i < SAMPLE_SIZE; i++) {
 		Paper* p = &self->papers[i];
 		printf("ID: %d, PaperID: %d, AuthorID: %d, Year: %d\n", p->id, p->paperID, p->authorID, p->year);
 	}
@@ -226,17 +228,15 @@ void load_edges(Graph* self, const char* filename) {
 
 
 	// for each line read from file, add edge to graph with weight as year difference
-    int from, to;
+    int from, to, weight;
     int count = 0;    //  debug counter
 
-    while (fscanf_s(file, "%d %d", &from, &to) == 2) {
+    //  changed to just read from file istead of manually creating weight 
+    while (fscanf_s(file, "%d %d %d", &from, &to, &weight) == 3) {
         if (from >= 0 && from < self->V &&
-            to >= 0 && to < self->V) {
-            //  weight = absolute year difference between papers
-            int weight = abs(self->papers[from].year - self->papers[to].year);
+            to   >= 0 && to   < self->V) {
             add_edge(self, from, to, weight);
             count++;
-
         }
     }
 
@@ -260,8 +260,8 @@ void print_paper(Graph* self, int id) {
         self->papers[id].year);
 }
 
-//  print all nodes linked to specific node 
-void print_adjacent(Graph* self, int id) {
+//  print all papers the current paper references 
+void print_paper_citations(Graph* self, int id) {
 
 	//  invalid
     if (id < 0 || id >= self->V) {
@@ -288,33 +288,45 @@ void print_adjacent(Graph* self, int id) {
 }
 
 
-void print_indegrees(Graph* self) {
+void print_references(Graph* self) {
+
+    
 
     //  allocate in degrees and error check 
     int* indegree = malloc(self->V * sizeof(int));
+    int* outdegree = malloc(self->V * sizeof(int));
+
     if (!indegree) {
         printf("Memory allocation failed\n");
         return;
     }
 
-    //  initialise all in degree to 0
-    for (int i = 0; i < self->V; i++) indegree[i] = 0;
+    //  initialise all degree to 0
+    for (int i = 0; i < self->V; i++) {
+        indegree[i] = 0;
+        outdegree[i] = 0;
+    }
 
     //  count incoming edges for each node
     for (int i = 0; i < self->V; i++) {
         for (Node* current = self->edges[i].head; current != NULL; current = current->next) {
             indegree[current->to]++;
+            outdegree[i]++;            
+
         }
     }
 
     //  print results
     printf("\nIn-Degrees:\n");
-    for (int i = 0; i < self->V; i++) {
-        printf("  [%d] PaperID: %d | References: %d\n",
+    for (int i = 0; i < self->V && i < SAMPLE_SIZE; i++) {
+        printf("  [%d] PaperID: %d | Referenced by: %d | references: %d\n",
             i,
             self->papers[i].paperID,
-            indegree[i]);
+            indegree[i],
+            outdegree[i]);
     }
 
     free(indegree);
+    free(outdegree);
+
 }
