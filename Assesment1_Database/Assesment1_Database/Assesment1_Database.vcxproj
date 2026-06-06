@@ -136,7 +136,8 @@
     <ClCompile Include="testing.c" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test.txt" />
+    <Text Include="test_edges.txt" />
+    <Text Include="test_papers.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bst.h" />

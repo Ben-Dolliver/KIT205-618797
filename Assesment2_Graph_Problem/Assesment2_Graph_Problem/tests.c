@@ -595,7 +595,7 @@ int run_graph_tests() {
 // ─── test for large scale graph model ──────────────────────
 
 void run_evaluation() {
-    printf("\n=== Evaluation: Moderately Sized Citation Network ===\n");
+    printf("\n=== Evaluation: large Sized Citation Network ===\n");
 
     int numPapers = 5000;
     int numAuthors = 5000;

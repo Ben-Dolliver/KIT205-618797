@@ -44,7 +44,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test.txt">
+    <Text Include="test_edges.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="test_papers.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
