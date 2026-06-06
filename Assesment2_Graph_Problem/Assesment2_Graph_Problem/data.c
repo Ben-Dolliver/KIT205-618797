@@ -130,8 +130,7 @@ void create_papers(int numPapers, int numAuthors) {
     for (int i = 0; i < numPapers; i++) {
         int paperID = rand_paper_id();
         int authorID = authors[rand() % numAuthors];
-        int year = rand() % 80 + 1956;             //  1954 - 2025
-
+        int year = rand() % 50 + 1970;   //  1970 - 2019 
         fprintf(file, "%d %d %d %d\n", i, paperID, authorID, year);
     }
 
@@ -141,7 +140,6 @@ void create_papers(int numPapers, int numAuthors) {
     //printf("Papers written to %s (%d papers, %d authors)\n",      //  good for debugging 
     //    PAPER_FILE, numPapers, numAuthors);
 }
-
 
 
 //  create test_edges.txt data with random edges between papers
@@ -190,16 +188,19 @@ void create_edges(int numPapers, int numEdges) {
     int edgeCount = 0;
 
     for (int i = 0; i < numPapers; i++) {
-        int Edges = rand() % numEdges + 1;     //  1-20 citations per paper
+        int Edges = rand() % numEdges + 1;     //  1-chosen number of citations per paper
         int added = 0;
         int attempts = 0;
+        int maxAtt = numPapers * 5;
 
-        while (added < Edges && attempts < numPapers) {
+        while (added < Edges && attempts < maxAtt) {
             int to = rand() % numPapers;
             attempts++;
 
-            //  only cite papers published strictly before this one
-            if (to != i && years[to] < years[i]) {
+            //  only cite papers published strictly before or same year as this one 
+            if (to != i && years[to] <= years[i]) {
+                
+
                 
 				weight = abs(years[i] - years[to]); //  weight = year difference between papers
                 fprintf_s(file, "%d %d %d\n", i, to, weight);

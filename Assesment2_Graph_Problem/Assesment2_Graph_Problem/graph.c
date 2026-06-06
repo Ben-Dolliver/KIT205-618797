@@ -29,7 +29,6 @@ void add_edge(Graph* self, int from, int to, int w) {
 }
 
 
-
 //  Cannot be used as algorithm but will keep here anyways may become useful in some way 
 double* calculate_pagerank(Graph* self, int iterations) {
 
@@ -170,7 +169,6 @@ void dijkstra_print(Graph* self, int src, int dest) {
 }
 
 
-
 //  load papers from file into graph
 void load_papers(Graph* self, const char* filename) {
 
@@ -204,6 +202,7 @@ void load_papers(Graph* self, const char* filename) {
 
 }
 
+//  print all papers in graph (limited for readability)
 void print_papers(Graph* self) {
 
     printf("\nPapers:\n");
@@ -291,7 +290,7 @@ void print_paper_citations(Graph* self, int id) {
     }
 }
 
-
+//  print all citations for each paper in graph (limited for readability)
 void print_references(Graph* self) {
 
     

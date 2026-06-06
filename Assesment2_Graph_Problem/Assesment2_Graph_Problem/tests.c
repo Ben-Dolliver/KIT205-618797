@@ -7,6 +7,9 @@
 
 //  chosen algorithm test  
 //  testing for dijkstra's algorithm, currently using a simple graph with known shortest paths
+
+// ─── Unit Tests for Graph Data Structure ──────────────────────
+
 int test_dijkstra() {
 
     printf("\n=== TEST: Dijkstra's Algorithm ===\n");
@@ -39,7 +42,7 @@ int test_dijkstra() {
 	
 
 
-    printf("TEST 1: source distance is 0... ");
+    printf("\nTEST 1: source distance is 0... ");
     if (dist[0] == 0) {
         printf("PASS\n");
         passed++;
@@ -120,13 +123,14 @@ int test_dijkstra() {
 }
 
 
-//  specific problem unit test 
+// ─── investigate the effect of graph size and references on the search algorithm ──────────────────────
+
 void investigate_path_length() {
 
 
     printf("\n=== INVESTIGATION: Graph Size vs Edge Count vs Avg Path Length ===\n");
     printf("%-10s %-10s %-10s %-10s\n",
-        "Nodes", "MaxEdges", "AvgPath", "Connected%");
+        "\nNodes", "MaxEdges", "AvgPath", "Connected%");
     printf("------------------------------------------\n");
 
     //  chosen graph sizes and edge counts to test
@@ -187,6 +191,7 @@ void investigate_path_length() {
 
 // ─── Unit Tests for Graph Data Structure ──────────────────────
 
+//  adding a reference 
 int test_add_edge() {
     printf("\nTEST: add_edge...\n");
 
@@ -235,6 +240,7 @@ int test_add_edge() {
     return 0;
 }
 
+//  adding multiple references 
 int test_add_multiple_edges() {
     printf("TEST: add_multiple_edges...\n");
 
@@ -284,6 +290,7 @@ int test_add_multiple_edges() {
     return 0;
 }
 
+//  verifying that edges are directed (i.e. adding 0->1 does not create 1->0)
 int test_directed_edge() {
     printf("\nTEST: edges are directed...\n");
 
@@ -349,6 +356,7 @@ int test_directed_edge() {
     return 0;
 }
 
+//  test the graph freeing 
 int test_free_graph() {
     printf("\nTEST: free_graph...\n");
 
@@ -423,6 +431,7 @@ int test_free_graph() {
     return 0;
 }
 
+//  test loading papers from file into the structiure 
 int test_load_papers() {
     printf("\nTEST: load_papers... ");
 
@@ -480,6 +489,7 @@ int test_load_papers() {
     return 0;
 }
 
+// test loading edges from file into the structure
 int test_load_edges() {
 
     printf("\nTEST: load_edges... ");
@@ -507,7 +517,7 @@ int test_load_edges() {
 
     load_papers(&G, "test_unit_papers.txt");
 
-    printf("  Loading edges from test_unit_edges.txt\n");
+    printf("\n  Loading edges from test_unit_edges.txt\n");
     load_edges(&G, "test_unit_edges.txt");
 
     printf("  Adjacency lists:\n");
@@ -582,6 +592,7 @@ int run_graph_tests() {
 }
 
 
+// ─── test for large scale graph model ──────────────────────
 
 void run_evaluation() {
     printf("\n=== Evaluation: Moderately Sized Citation Network ===\n");
@@ -590,7 +601,7 @@ void run_evaluation() {
     int numAuthors = 5000;
     int maxEdges = 15;
 
-    printf("Graph parameters:\n");
+    printf("\nGraph parameters:\n");
     printf("  Papers:  %d\n", numPapers);
     printf("  Authors: %d\n", numAuthors);
     printf("  Max citations per paper: %d\n\n", maxEdges);
@@ -667,34 +678,39 @@ void run_evaluation() {
     free(citations);
     printf("\n");
 
-    // ─── 3. Shortest Path Examples ────────────────────────────
     printf("--- Shortest Path Examples (Dijkstra's) ---\n");
 
-    //  find a few interesting pairs to demonstrate
-    int pairs[4][2] = {
-        {0,   numPapers - 1},   //  first to last
-        {0,   numPapers / 4},   //  first to quarter
-        {numPapers / 4, numPapers / 2},   //  quarter to half
-        {numPapers / 2, numPapers - 1}    //  half to last
-    };
+for (int p = 0; p < 4; p++) {
+    int src, dest;
+    int* dist = NULL;
+    int attempts = 0;
+    int maxAttempts = 1000;
 
-    for (int p = 0; p < 4; p++) {
-        int src = pairs[p][0];
-        int dest = pairs[p][1];
-        int* dist = dijkstra(&G, src);
+    //  keep trying until a valid path is found
+    do {
+        src  = rand() % G.V;
+        dest = rand() % G.V;
+        while (dest == src) dest = rand() % G.V;
 
-        printf("  From [%d] Year:%d  To [%d] Year:%d  -->  ",
-            src, G.papers[src].year,
-            dest, G.papers[dest].year);
+        if (dist != NULL) free(dist);
+        dist = dijkstra(&G, src);
+        attempts++;
 
-        if (dist[dest] == 999999)
-            printf("No path found\n");
-        else
-            printf("Cost: %d (year-weighted distance)\n", dist[dest]);
+    } while (dist[dest] == 999999 && attempts < maxAttempts);
 
-        free(dist);
-    }
-    printf("\n");
+    printf("  From [%d] Year:%d  To [%d] Year:%d  -->  ",
+           src,  G.papers[src].year,
+           dest, G.papers[dest].year); 
+
+    if (dist[dest] == 999999)
+        printf("No path found after %d attempts\n", maxAttempts);
+    else
+        printf("Cost: %d\n",
+            dist[dest] );
+
+    free(dist);
+}
+printf("\n");
 
     // ─── 4. Connectivity Analysis ─────────────────────────────
     printf("--- Connectivity Analysis ---\n");
@@ -727,4 +743,14 @@ void run_evaluation() {
 
     free_graph(&G);
     printf("\n=== Evaluation Complete ===\n");
+}
+
+//  standard all testing output
+void test_all() {
+
+    investigate_path_length();
+    test_dijkstra();
+	run_graph_tests();
+	run_evaluation();
+
 }
