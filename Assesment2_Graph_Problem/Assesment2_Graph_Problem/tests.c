@@ -1,4 +1,4 @@
-#include "tests.h"
+﻿#include "tests.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -169,33 +169,6 @@ int test_dijkstra() {
 }
 
 
-
-
-//  Cannot be used currently for assignment algorithm but might become useful for something adjacent 
-int pageRank_test(Graph* self, int iterations) {
-
-    Graph G = *self;        //  graph
-
-
-    double* pagerank = calculate_pagerank(&G, 10);
-
-    if (!pagerank) {    //  Error handling 
-        printf("Error in pagerank\n");
-        return 1;
-    }
-
-    printf("\nPageRanks:\n");
-
-    //  modify this one for display length c.g. (i < 20 &&)
-    for (int i = 0; i < G.V; i++) {   //  print pagerank 
-        printf("Vertex %d: %.4f\n", i, pagerank[i]);
-    }
-
-    free(pagerank);
-
-    return 0;
-}
-
 //  specific problem unit test 
 void investigate_path_length() {
 
@@ -257,4 +230,268 @@ void investigate_path_length() {
 
 
     }
+}
+
+
+
+// ─── Unit Tests for Graph Data Structure ──────────────────────
+
+int test_add_edge() {
+    printf("\nTEST: add_edge...\n");
+
+    Graph G;
+    G.V = 3;
+    G.edges = malloc(G.V * sizeof(EdgeList));
+    G.papers = malloc(G.V * sizeof(Paper));
+
+    printf("  Creating graph with %d vertices\n", G.V);
+
+    for (int i = 0; i < G.V; i++) {
+        G.edges[i].head = NULL;
+        printf("  Initialised vertex %d\n", i);
+    }
+
+    printf("  Adding edge 0 -> 1 (weight=5)\n");
+    add_edge(&G, 0, 1, 5);
+
+    printf("  Verifying edge exists...\n");
+    if (G.edges[0].head == NULL) {
+        printf("FAIL (no edge created)\n");
+        free_graph(&G);
+        return 1;
+    }
+
+    printf("    Found edge\n");
+    printf("    Destination = %d\n", G.edges[0].head->to);
+    printf("    Weight      = %d\n", G.edges[0].head->weight);
+
+    if (G.edges[0].head->to != 1) {
+        printf("FAIL (wrong destination)\n");
+        free_graph(&G);
+        return 1;
+    }
+
+    if (G.edges[0].head->weight != 5) {
+        printf("FAIL (wrong weight)\n");
+        free_graph(&G);
+        return 1;
+    }
+
+    printf("  Freeing graph\n");
+    free_graph(&G);
+
+    printf("PASS\n\n");
+    return 0;
+}
+
+int test_add_multiple_edges() {
+    printf("TEST: add_multiple_edges... ");
+    Graph G;
+    G.V = 3;
+    G.edges = malloc(G.V * sizeof(EdgeList));
+    G.papers = malloc(G.V * sizeof(Paper));
+    for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
+
+    add_edge(&G, 0, 1, 3);
+    add_edge(&G, 0, 2, 7);
+
+    //  count edges from node 0
+    int count = 0;
+    for (Node* cur = G.edges[0].head; cur != NULL; cur = cur->next) {
+        count++;
+    }
+    if (count != 2) {
+        printf("FAIL (expected 2 edges, got %d)\n", count);
+        free_graph(&G);
+        return 1;
+    }
+    free_graph(&G);
+    printf("PASS\n");
+    return 0;
+}
+
+int test_directed_edge() {
+    printf("TEST: edges are directed... ");
+    Graph G;
+    G.V = 3;
+    G.edges = malloc(G.V * sizeof(EdgeList));
+    G.papers = malloc(G.V * sizeof(Paper));
+    for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
+
+    add_edge(&G, 0, 1, 5);
+
+    //  edge 0->1 should exist
+    if (G.edges[0].head == NULL) {
+        printf("FAIL (edge 0->1 missing)\n");
+        free_graph(&G);
+        return 1;
+    }
+    //  edge 1->0 should NOT exist
+    if (G.edges[1].head != NULL) {
+        printf("FAIL (reverse edge 1->0 should not exist)\n");
+        free_graph(&G);
+        return 1;
+    }
+    free_graph(&G);
+    printf("PASS\n");
+    return 0;
+}
+
+int test_free_graph() {
+    printf("TEST: free_graph... ");
+    Graph G;
+    G.V = 3;
+    G.edges = malloc(G.V * sizeof(EdgeList));
+    G.papers = malloc(G.V * sizeof(Paper));
+    for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
+
+    add_edge(&G, 0, 1, 5);
+    add_edge(&G, 1, 2, 3);
+
+    free_graph(&G);
+
+    //  verify graph is reset
+    if (G.V != 0) {
+        printf("FAIL (V should be 0 after free, got %d)\n", G.V);
+        return 1;
+    }
+    if (G.edges != NULL) {
+        printf("FAIL (edges should be NULL after free)\n");
+        return 1;
+    }
+    if (G.papers != NULL) {
+        printf("FAIL (papers should be NULL after free)\n");
+        return 1;
+    }
+    printf("PASS\n");
+    return 0;
+}
+
+int test_load_papers() {
+    printf("TEST: load_papers... ");
+
+    //  create small known papers file
+    FILE* f = fopen("test_unit_papers.txt", "w");
+    if (!f) {
+        printf("FAIL (could not create test file)\n");
+        return 1;
+    }
+    fprintf(f, "id paperID authorID year\n");
+    fprintf(f, "0 11111 101 2000\n");
+    fprintf(f, "1 22222 102 2010\n");
+    fprintf(f, "2 33333 103 2020\n");
+    fclose(f);
+
+    Graph G;
+    G.V = 3;
+    G.edges = malloc(G.V * sizeof(EdgeList));
+    G.papers = malloc(G.V * sizeof(Paper));
+    for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
+
+    printf("  Loading papers from test_unit_papers.txt\n");
+    load_papers(&G, "test_unit_papers.txt");
+
+    //  verify known values loaded correctly
+    if (G.papers[0].paperID != 11111) {
+        printf("FAIL (expected paperID 11111, got %d)\n",
+            G.papers[0].paperID);
+        free_graph(&G);
+        return 1;
+    }
+    if (G.papers[1].year != 2010) {
+        printf("FAIL (expected year 2010, got %d)\n",
+            G.papers[1].year);
+        free_graph(&G);
+        return 1;
+    }
+    if (G.papers[2].authorID != 103) {
+        printf("FAIL (expected authorID 103, got %d)\n",
+            G.papers[2].authorID);
+        free_graph(&G);
+        return 1;
+    }
+    free_graph(&G);
+    printf("PASS\n");
+    return 0;
+}
+
+int test_load_edges() {
+
+    printf("TEST: load_edges... ");
+
+    //  create small known papers file first (needed for year weights)
+    FILE* f = fopen("test_unit_papers.txt", "w");
+    fprintf(f, "id paperID authorID year\n");
+    fprintf(f, "0 11111 101 2000\n");
+    fprintf(f, "1 22222 102 2005\n");
+    fprintf(f, "2 33333 103 2010\n");
+    fclose(f);
+
+    //  create small known edges file
+    FILE* e = fopen("test_unit_edges.txt", "w");
+    fprintf(e, "from,to,weight\n");
+    fprintf(e, "1 0 5\n");   // weight = 2005 - 2000 = 5
+    fprintf(e, "2 1 5\n");   // weight = 2010 - 2005 = 5
+    fclose(e);
+
+    Graph G;
+    G.V = 3;
+    G.edges = malloc(G.V * sizeof(EdgeList));
+    G.papers = malloc(G.V * sizeof(Paper));
+    for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
+
+    load_papers(&G, "test_unit_papers.txt");
+    printf("  Loading edges from test_unit_edges.txt\n");
+    load_edges(&G, "test_unit_edges.txt");
+
+    printf("  Adjacency lists:\n");
+
+    for (int i = 0; i < G.V; i++) {
+        printf("    Node %d:", i);
+
+        Node* cur = G.edges[i].head;
+
+        if (!cur)
+            printf(" (none)");
+
+        while (cur) {
+            printf(" -> %d(w=%d)",
+                cur->to,
+                cur->weight);
+            cur = cur->next;
+        }
+
+        printf("\n");
+    }
+    //  verify edge 1->0 exists with weight 5
+    if (G.edges[1].head == NULL) {
+        printf("FAIL (edge 1->0 missing)\n");
+        free_graph(&G);
+        return 1;
+    }
+    if (G.edges[1].head->weight != 5) {
+        printf("FAIL (expected weight 5, got %d)\n",
+            G.edges[1].head->weight);
+        free_graph(&G);
+        return 1;
+    }
+    free_graph(&G);
+    printf("PASS\n");
+    return 0;
+}
+
+//  run all graph data structure tests
+int run_graph_tests() {
+    printf("\n=== Unit Tests: Graph Data Structure ===\n");
+    int failures = 0;
+    failures += test_add_edge();
+    failures += test_add_multiple_edges();
+    failures += test_directed_edge();
+    failures += test_free_graph();
+    failures += test_load_papers();
+    failures += test_load_edges();
+    printf(failures == 0
+        ? "All graph tests passed\n"
+        : "%d graph test(s) failed\n", failures);
+    return failures;
 }

@@ -13,6 +13,7 @@ int main() {
 
     investigate_path_length();
 	test_dijkstra();
+    run_graph_tests();
     create_data(1000, 1000, 20);
 
 
