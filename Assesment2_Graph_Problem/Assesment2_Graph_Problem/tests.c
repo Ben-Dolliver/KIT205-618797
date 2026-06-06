@@ -1,6 +1,7 @@
 ﻿#include "tests.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 
@@ -578,4 +579,152 @@ int run_graph_tests() {
         ? "All graph tests passed\n"
         : "%d graph test(s) failed\n", failures);
     return failures;
+}
+
+
+
+void run_evaluation() {
+    printf("\n=== Evaluation: Moderately Sized Citation Network ===\n");
+
+    int numPapers = 5000;
+    int numAuthors = 5000;
+    int maxEdges = 15;
+
+    printf("Graph parameters:\n");
+    printf("  Papers:  %d\n", numPapers);
+    printf("  Authors: %d\n", numAuthors);
+    printf("  Max citations per paper: %d\n\n", maxEdges);
+
+    //  generate and load graph
+    create_data(numPapers, numAuthors, maxEdges);
+
+    Graph G;
+    G.V = numPapers;
+    G.edges = malloc(G.V * sizeof(EdgeList));
+    G.papers = malloc(G.V * sizeof(Paper));
+    for (int i = 0; i < G.V; i++) G.edges[i].head = NULL;
+
+    load_papers(&G, PAPER_FILE);
+    load_edges(&G, EDGES_FILE);
+
+    // ─── 1. Basic Graph Statistics ────────────────────────────
+    printf("--- Graph Statistics ---\n");
+
+    //  count total edges
+    int totalEdges = 0;
+    int maxIndegree = 0;
+    int maxOutdegree = 0;
+    int isolated = 0;
+    int* indegree = malloc(G.V * sizeof(int));
+    int* outdegree = malloc(G.V * sizeof(int));
+    for (int i = 0; i < G.V; i++) {
+        indegree[i] = 0;
+        outdegree[i] = 0;
+    }
+    for (int i = 0; i < G.V; i++) {
+        for (Node* cur = G.edges[i].head; cur != NULL; cur = cur->next) {
+            totalEdges++;
+            outdegree[i]++;
+            indegree[cur->to]++;
+        }
+    }
+    for (int i = 0; i < G.V; i++) {
+        if (indegree[i] > maxIndegree)  maxIndegree = indegree[i];
+        if (outdegree[i] > maxOutdegree) maxOutdegree = outdegree[i];
+        if (indegree[i] == 0 && outdegree[i] == 0) isolated++;
+    }
+    printf("  Total edges:       %d\n", totalEdges);
+    printf("  Avg edges/paper:   %.2f\n", (double)totalEdges / G.V);
+    printf("  Max in-degree:     %d\n", maxIndegree);
+    printf("  Max out-degree:    %d\n", maxOutdegree);
+    printf("  Isolated nodes:    %d\n\n", isolated);
+    free(indegree);
+    free(outdegree);
+
+    // ─── 2. Most Cited Papers ─────────────────────────────────
+    printf("--- Top 5 Most Cited Papers ---\n");
+    int* citations = malloc(G.V * sizeof(int));
+    for (int i = 0; i < G.V; i++) citations[i] = 0;
+    for (int i = 0; i < G.V; i++) {
+        for (Node* cur = G.edges[i].head; cur != NULL; cur = cur->next) {
+            citations[cur->to]++;
+        }
+    }
+    //  find top 5 by simple selection
+    for (int t = 0; t < 5; t++) {
+        int best = 0;
+        for (int i = 1; i < G.V; i++) {
+            if (citations[i] > citations[best]) best = i;
+        }
+        printf("  [%d] PaperID: %d | AuthorID: %d | Year: %d | Citations: %d\n",
+            best,
+            G.papers[best].paperID,
+            G.papers[best].authorID,
+            G.papers[best].year,
+            citations[best]);
+        citations[best] = -1;   //  exclude from next search
+    }
+    free(citations);
+    printf("\n");
+
+    // ─── 3. Shortest Path Examples ────────────────────────────
+    printf("--- Shortest Path Examples (Dijkstra's) ---\n");
+
+    //  find a few interesting pairs to demonstrate
+    int pairs[4][2] = {
+        {0,   numPapers - 1},   //  first to last
+        {0,   numPapers / 4},   //  first to quarter
+        {numPapers / 4, numPapers / 2},   //  quarter to half
+        {numPapers / 2, numPapers - 1}    //  half to last
+    };
+
+    for (int p = 0; p < 4; p++) {
+        int src = pairs[p][0];
+        int dest = pairs[p][1];
+        int* dist = dijkstra(&G, src);
+
+        printf("  From [%d] Year:%d  To [%d] Year:%d  -->  ",
+            src, G.papers[src].year,
+            dest, G.papers[dest].year);
+
+        if (dist[dest] == 999999)
+            printf("No path found\n");
+        else
+            printf("Cost: %d (year-weighted distance)\n", dist[dest]);
+
+        free(dist);
+    }
+    printf("\n");
+
+    // ─── 4. Connectivity Analysis ─────────────────────────────
+    printf("--- Connectivity Analysis ---\n");
+    int reachable = 0;
+    int total = G.V * (G.V - 1);
+
+    //  sample 50 random source nodes for speed
+    for (int s = 0; s < 50; s++) {
+        int src = rand() % G.V;
+        int* dist = dijkstra(&G, src);
+        for (int j = 0; j < G.V; j++) {
+            if (j != src && dist[j] != 999999) reachable++;
+        }
+        free(dist);
+    }
+    double connectivity = (double)reachable / (50 * (G.V - 1)) * 100;
+    printf("  Estimated connectivity: %.1f%%\n\n", connectivity);
+
+    // ─── 5. Average Shortest Path ─────────────────────────────
+    printf("--- Average Shortest Path ---\n");
+    double avg = average_shortest_path(&G);
+    if (avg < 0)
+        printf("  No paths found\n");
+    else
+        printf("  Average year-weighted path length: %.2f\n\n", avg);
+
+    // ─── 6. Sample In/Out Degrees ─────────────────────────────
+    printf("--- Sample of Papers (first %d) ---\n", SAMPLE_SIZE);
+    print_papers(&G);
+
+    free_graph(&G);
+    printf("\n=== Evaluation Complete ===\n");
 }

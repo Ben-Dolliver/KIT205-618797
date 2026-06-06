@@ -14,16 +14,9 @@ int main() {
     investigate_path_length();
 	test_dijkstra();
     run_graph_tests();
-    create_data(1000, 1000, 20);
+    //create_data(1000, 1000, 20);
+    run_evaluation();
 
-
-	//print_paper(&G, 25);   
- //   print_paper_citations(&G, 25);
-
- //   //graph_test(&G);      // pass G in
- //   print_references(&G);
- //   print_papers(&G);
- //   dijkstra_print(&G, 0, 100);
 
 
 
