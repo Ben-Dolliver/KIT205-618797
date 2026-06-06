@@ -334,7 +334,6 @@ void print_references(Graph* self) {
 
 }
 
-
 //  calculate the average year distance for the shortest Path calculation usiing dijkstras algorithm 
 double average_shortest_path(Graph* self) {
 	int total = 0;  //  total distance

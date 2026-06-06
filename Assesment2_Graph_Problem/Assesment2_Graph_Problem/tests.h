@@ -5,7 +5,6 @@
 
 //	testing for dijkstra's algorithm 
 int test_dijkstra();
-int run_graph_tests();
 void investigate_path_length();
 
 //	large scale dataset testing
@@ -19,6 +18,8 @@ int test_directed_edge();
 int test_add_multiple_edges();
 int test_add_edge();
 
+// all graph tests 
+int run_graph_tests();
 
 //  standard all testing output
 void test_all();
